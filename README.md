@@ -72,10 +72,12 @@ This project is made possible by the [picocalc-text-starter](https://github.com/
 └── third_party
 ```
 
-## License
-
-This project is open-source. Feel free to modify and distribute it for your PicoCalc setup.
-
 ## A Simplified Flowchart
 
 ![A simplified flowchart of the PicoCalc Reversi program. The primary subject is a tall, vertically organized process diagram tracing initialization, repeated turn checks, human keyboard input and cursor movement, move validation, the machine AI turn, pass states, game-over scoring, and restart or shell exit. A neutral technical tone is conveyed with rounded boxes, rectangles, diamonds, and directional arrows on a light background. Transcribed text includes main Start; picocalc_init, init_board & lcd_set_font; draw_board: Initial board & instructions; while running?; Check human_can_move & machine_can_move; Both False?; count_pieces & draw_board Winner/Tie; Wait for getchar & call init_board; human_can_move?; draw_board 'Passing...' & sleep 1500ms; draw_board & place_cursor; while !selected; keyboard_get_key; Arrow Keys; KEY_RETURN; KEY_ESC; running = false & shell_exit; evaluate_move apply=true == 0?; Set status 'Invalid move. Try again:'; has_valid_moves MACHINE?; draw_board 'Thinking...', sleep 600ms & machine_turn; Set status 'Your turn...'; has_valid_moves HUMAN?; and Set status 'MACHINE had no moves and passed!' Labels also indicate True, False, Yes, and No at decision branches.](flowchart.svg)
+
+## License
+
+Attribution-NonCommercial-ShareAlike 4.0 International
+
+See: [License]
