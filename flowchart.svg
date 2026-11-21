@@ -1,0 +1,261 @@
+<svg class="dark " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1231.72 2246.59" width="1231.72" height="2246.59" id="mf9b8f8__root" data-diagram-type="flowchart">
+  <style data-mercat-style="universal">.mercat text{font-family:'Google Sans',Roboto,Arial,sans-serif;fill:var(--m-text);dominant-baseline:central}.mercat .m-node .m-shape{fill:var(--m-node-fill);stroke:var(--m-node-stroke);stroke-width:1.5px}.mercat .m-edge .m-path{fill:none;stroke:var(--m-line);stroke-width:1.5px}.mercat .m-edge-label .m-pill-bg,.mercat .m-edge-label .m-shape{fill:var(--m-pill-bg);stroke:var(--m-pill-border);stroke-width:1px}.mercat .m-edge-label .m-label{fill:var(--m-text-sec)}.mercat .t-label{font-size:13px;font-weight:500}.mercat .t-edge{font-size:11px;font-weight:400}</style>
+  <style data-mercat-style="theme-light">#mf9b8f8__root{--m-text:#1f1f1f;--m-text-sec:#797979;--m-line:#545454;--m-node-fill:#f8f9fa;--m-node-stroke:#747775;--m-pill-bg:#fbfbfb;--m-pill-border:#d7d7d7}</style>
+  <style data-mercat-style="theme-dark">#mf9b8f8__root.dark{--m-text:#e3e3e3;--m-text-sec:#959595;--m-line:#bfbfbf;--m-node-fill:#2d2e30;--m-node-stroke:#8e918f;--m-pill-bg:#232323;--m-pill-border:#424242}</style>
+  <g class="mercat mercat-flowchart" transform="translate(208.25, -35)">
+    <defs>
+      <marker id="mf9b8f8__mk-arrow" refX="9.45" refY="3.4" markerWidth="10.8" markerHeight="6.8" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+        <path d="M 0 0 L 10.8 3.4 L 0 6.8 Z" class="m-marker" fill="var(--m-line)" stroke="none"/>
+      </marker>
+    </defs>
+    <g class="m-node m-edge" id="mf9b8f8__edge__Start__Init__0" data-role="connector">
+      <path d="M 396.64 86.9 L 396.64 145.55" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__Init__DrawStart__0" data-role="connector">
+      <path d="M 396.64 183.8 L 396.64 242.45" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__DrawStart__MainLoop__0" data-role="connector">
+      <path d="M 396.64 280.7 L 396.64 339.35" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__MainLoop__End__0" data-role="connector">
+      <path d="M 426.04 407.27 L 426.04 450.59 Q 426.04 456.59, 432.04 456.59 L 513.99 456.59 Q 519.99 456.59, 519.99 462.59 L 519.99 539.24" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__MainLoop__CheckMoves__0" data-role="connector">
+      <path d="M 367.25 407.27 L 367.25 539.24" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__CheckMoves__BothFalse__0" data-role="connector">
+      <path d="M 273.29 577.49 L 273.29 636.14" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__BothFalse__CountScore__0" data-role="connector">
+      <path d="M 197.35 674.47 L -30.09 674.47 Q -36.09 674.47, -36.09 680.47 L -36.09 856.8" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__CountScore__WaitRestart__0" data-role="connector">
+      <path d="M -36.09 895.05 L -36.09 1040.38" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__WaitRestart__MainLoop__0" data-role="connector">
+      <path d="M -153.59 1060.18 L -187.25 1060.18 Q -193.25 1060.18, -193.25 1054.18 L -193.25 366.67 Q -193.25 360.67, -187.25 360.67 L 351.2 360.67" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__BothFalse__HumanCheck__0" data-role="connector">
+      <path d="M 349.24 674.47 L 576.67 674.47 Q 582.67 674.47, 582.67 680.47 L 582.67 830.11" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__HumanCheck__HumanPass__0" data-role="connector">
+      <path d="M 692.37 876.6 L 844.85 876.6 Q 850.85 876.6, 850.85 882.6 L 850.85 1040.38" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__HumanPass__AICheck__0" data-role="connector">
+      <path d="M 850.85 1078.63 L 850.85 1484.77 Q 850.85 1490.77, 844.85 1490.77 L 557.88 1490.77 Q 551.88 1490.77, 551.88 1496.77 L 551.88 1789.6" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__HumanCheck__DrawHuman__0" data-role="connector">
+      <path d="M 472.98 876.6 L 320.5 876.6 Q 314.5 876.6, 314.5 882.6 L 314.5 1040.38" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__DrawHuman__InputLoop__0" data-role="connector">
+      <path d="M 314.5 1078.63 L 314.5 1137.28" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__InputLoop__GetKey__0" data-role="connector">
+      <path d="M 314.5 1219.42 L 314.5 1278.07" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__GetKey__WrapMove__0" data-role="connector">
+      <path d="M 344.58 1316.32 L 344.58 1346.32 Q 344.58 1352.32, 350.58 1352.32 L 614.23 1352.32 Q 620.23 1352.32, 620.23 1358.32 L 620.23 1434.97" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__WrapMove__InputLoop__0" data-role="connector">
+      <path d="M 805.85 1454.77 L 874.85 1454.77 Q 880.85 1454.77, 880.85 1448.77 L 880.85 1185.03 Q 880.85 1179.03, 874.85 1179.03 L 405.91 1179.03" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__GetKey__SetSel__0" data-role="connector">
+      <path d="M 314.5 1316.32 L 314.5 1434.97" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__SetSel__EvalHuman__0" data-role="connector">
+      <path d="M 314.5 1473.22 L 314.5 1531.87" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__GetKey__EscExit__0" data-role="connector">
+      <path d="M 284.42 1316.32 L 284.42 1346.32 Q 284.42 1352.32, 278.42 1352.32 L 107.14 1352.32 Q 101.14 1352.32, 101.14 1358.32 L 101.14 1434.97" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__EscExit__InputLoop__0" data-role="connector">
+      <path d="M 3.4 1454.77 L -10.6 1454.77 Q -16.6 1454.77, -16.6 1448.77 L -16.6 1185.03 Q -16.6 1179.03, -10.6 1179.03 L 223.09 1179.03" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__EvalHuman__SetInvalid__0" data-role="connector">
+      <path d="M 144.77 1592.85 L 134.77 1592.85 Q 128.77 1592.85, 128.77 1598.85 L 128.77 1682.48 Q 128.77 1688.48, 134.77 1688.48 L 138.77 1688.48 Q 144.77 1688.48, 144.77 1694.48 L 144.77 1808.09" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__SetInvalid__MainLoop__0" data-role="connector">
+      <path d="M 3.84 1827.89 L -187.25 1827.89 Q -193.25 1827.89, -193.25 1821.89 L -193.25 386.64 Q -193.25 380.64, -187.25 380.64 L 307.11 380.64" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__EvalHuman__AICheck__0" data-role="connector">
+      <path d="M 484.23 1592.85 L 494.23 1592.85 Q 500.23 1592.85, 500.23 1598.85 L 500.23 1682.48 Q 500.23 1688.48, 494.23 1688.48 L 456.38 1688.48 Q 450.38 1688.48, 450.38 1694.48 L 450.38 1789.6" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__AICheck__AIThink__0" data-role="connector">
+      <path d="M 348.87 1827.89 L 338.87 1827.89 Q 332.87 1827.89, 332.87 1833.89 L 332.87 1913.29 Q 332.87 1919.29, 338.87 1919.29 L 342.87 1919.29 Q 348.87 1919.29, 348.87 1925.29 L 348.87 2036.69" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__AIThink__SetNextStatus__0" data-role="connector">
+      <path d="M 312.34 2074.94 L 312.34 2228.34" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__SetNextStatus__MainLoop__0" data-role="connector">
+      <path d="M 226.67 2248.14 L -187.25 2248.14 Q -193.25 2248.14, -193.25 2242.14 L -193.25 406.61 Q -193.25 400.61, -187.25 400.61 L 351.2 400.61" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__AICheck__HumanStillCan__0" data-role="connector">
+      <path d="M 653.39 1827.89 L 683.92 1827.89 Q 689.92 1827.89, 689.92 1833.89 L 689.92 2001.94" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__HumanStillCan__SetAIPass__0" data-role="connector">
+      <path d="M 689.92 2109.69 L 689.92 2228.34" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__SetAIPass__MainLoop__0" data-role="connector">
+      <path d="M 855.48 2248.14 L 1002.48 2248.14 Q 1008.48 2248.14, 1008.48 2242.14 L 1008.48 399.96 Q 1008.48 393.96, 1002.48 393.96 L 456.78 393.96" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-edge" id="mf9b8f8__edge__HumanStillCan__MainLoop__0" data-role="connector">
+      <path d="M 833.02 2056.49 L 1002.48 2056.49 Q 1008.48 2056.49, 1008.48 2050.49 L 1008.48 373.33 Q 1008.48 367.33, 1002.48 367.33 L 456.78 367.33" class="m-path" marker-end="url(#mf9b8f8__mk-arrow)"/>
+    </g>
+    <g class="m-node m-node--stadium" id="mf9b8f8__node__Start" data-role="vertex">
+      <rect x="349.32" y="50" width="94.65" height="36.9" rx="18.45" ry="18.45" class="m-shape"/>
+      <text x="396.64" y="68.45" class="m-label t-label" text-anchor="middle">main Start</text>
+    </g>
+    <g class="m-node m-node--rect" id="mf9b8f8__node__Init" data-role="vertex">
+      <rect x="260.61" y="146.9" width="272.07" height="36.9" class="m-shape"/>
+      <text x="396.64" y="165.35" class="m-label t-label" text-anchor="middle">picocalc_init, init_board &amp; lcd_set_font</text>
+    </g>
+    <g class="m-node m-node--rect" id="mf9b8f8__node__DrawStart" data-role="vertex">
+      <rect x="259.46" y="243.8" width="274.37" height="36.9" class="m-shape"/>
+      <text x="396.64" y="262.25" class="m-label t-label" text-anchor="middle">draw_board: Initial board &amp; instructions</text>
+    </g>
+    <g class="m-node m-node--diamond" id="mf9b8f8__node__MainLoop" data-role="vertex">
+      <polygon points="396.64,340.7 484.83,380.64 396.64,420.59 308.46,380.64" class="m-shape"/>
+      <text x="396.64" y="380.64" class="m-label t-label" text-anchor="middle">while running?</text>
+    </g>
+    <g class="m-node m-node--rect" id="mf9b8f8__node__CheckMoves" data-role="vertex">
+      <rect x="111.72" y="540.59" width="323.14" height="36.9" class="m-shape"/>
+      <text x="273.29" y="559.04" class="m-label t-label" text-anchor="middle">Check human_can_move &amp; machine_can_move</text>
+    </g>
+    <g class="m-node m-node--stadium" id="mf9b8f8__node__End" data-role="vertex">
+      <rect x="479.86" y="540.59" width="80.27" height="36.9" rx="18.45" ry="18.45" class="m-shape"/>
+      <text x="519.99" y="559.04" class="m-label t-label" text-anchor="middle">return 0</text>
+    </g>
+    <g class="m-node m-node--diamond" id="mf9b8f8__node__BothFalse" data-role="vertex">
+      <polygon points="273.29,637.49 349.24,674.47 273.29,711.46 197.35,674.47" class="m-shape"/>
+      <text x="273.29" y="674.47" class="m-label t-label" text-anchor="middle">Both False?</text>
+    </g>
+    <g class="m-node m-node--rect" id="mf9b8f8__node__CountScore" data-role="vertex">
+      <rect x="-173.25" y="858.15" width="274.31" height="36.9" class="m-shape"/>
+      <text x="-36.09" y="876.6" class="m-label t-label" text-anchor="middle">count_pieces &amp; draw_board Winner/Tie</text>
+    </g>
+    <g class="m-node m-node--diamond" id="mf9b8f8__node__HumanCheck" data-role="vertex">
+      <polygon points="582.67,831.46 692.37,876.6 582.67,921.73 472.98,876.6" class="m-shape"/>
+      <text x="582.67" y="876.6" class="m-label t-label" text-anchor="middle">human_can_move?</text>
+    </g>
+    <g class="m-node m-node--rect" id="mf9b8f8__node__WaitRestart" data-role="vertex">
+      <rect x="-153.59" y="1041.73" width="235" height="36.9" class="m-shape"/>
+      <text x="-36.09" y="1060.18" class="m-label t-label" text-anchor="middle">Wait for getchar &amp; call init_board</text>
+    </g>
+    <g class="m-node m-node--rect" id="mf9b8f8__node__DrawHuman" data-role="vertex">
+      <rect x="214.13" y="1041.73" width="200.73" height="36.9" class="m-shape"/>
+      <text x="314.5" y="1060.18" class="m-label t-label" text-anchor="middle">draw_board &amp; place_cursor</text>
+    </g>
+    <g class="m-node m-node--rect" id="mf9b8f8__node__HumanPass" data-role="vertex">
+      <rect x="713.22" y="1041.73" width="275.26" height="36.9" class="m-shape"/>
+      <text x="850.85" y="1060.18" class="m-label t-label" text-anchor="middle">draw_board 'Passing...' &amp; sleep 1500ms</text>
+    </g>
+    <g class="m-node m-node--diamond" id="mf9b8f8__node__InputLoop" data-role="vertex">
+      <polygon points="314.5,1138.63 404.56,1179.03 314.5,1219.42 224.44,1179.03" class="m-shape"/>
+      <text x="314.5" y="1179.03" class="m-label t-label" text-anchor="middle">while !selected</text>
+    </g>
+    <g class="m-node m-node--rect" id="mf9b8f8__node__GetKey" data-role="vertex">
+      <rect x="242.34" y="1279.42" width="144.32" height="36.9" class="m-shape"/>
+      <text x="314.5" y="1297.87" class="m-label t-label" text-anchor="middle">keyboard_get_key</text>
+    </g>
+    <g class="m-node m-node--rect" id="mf9b8f8__node__EscExit" data-role="vertex">
+      <rect x="3.4" y="1436.32" width="195.48" height="36.9" class="m-shape"/>
+      <text x="101.14" y="1454.77" class="m-label t-label" text-anchor="middle">running = false &amp; shell_exit</text>
+    </g>
+    <g class="m-node m-node--rect" id="mf9b8f8__node__SetSel" data-role="vertex">
+      <rect x="253" y="1436.32" width="122.99" height="36.9" class="m-shape"/>
+      <text x="314.5" y="1454.77" class="m-label t-label" text-anchor="middle">selected = true</text>
+    </g>
+    <g class="m-node m-node--rect" id="mf9b8f8__node__WrapMove" data-role="vertex">
+      <rect x="434.6" y="1436.32" width="371.25" height="36.9" class="m-shape"/>
+      <text x="620.23" y="1454.77" class="m-label t-label" text-anchor="middle">Update cursor_row/col with wrap-around &amp; ANSI move</text>
+    </g>
+    <g class="m-node m-node--diamond" id="mf9b8f8__node__EvalHuman" data-role="vertex">
+      <polygon points="314.5,1533.22 484.23,1592.85 314.5,1652.48 144.77,1592.85" class="m-shape"/>
+      <text x="314.5" y="1592.85" class="m-label t-label" text-anchor="middle">evaluate_move apply=true == 0?</text>
+    </g>
+    <g class="m-node m-node--rect" id="mf9b8f8__node__SetInvalid" data-role="vertex">
+      <rect x="3.84" y="1809.44" width="248.05" height="36.9" class="m-shape"/>
+      <text x="127.87" y="1827.89" class="m-label t-label" text-anchor="middle">Set status 'Invalid move. Try again:'</text>
+    </g>
+    <g class="m-node m-node--diamond" id="mf9b8f8__node__AICheck" data-role="vertex">
+      <polygon points="501.13,1772.48 653.39,1827.89 501.13,1883.29 348.87,1827.89" class="m-shape"/>
+      <text x="501.13" y="1827.89" class="m-label t-label" text-anchor="middle">has_valid_moves MACHINE?</text>
+    </g>
+    <g class="m-node m-node--rect" id="mf9b8f8__node__AIThink" data-role="vertex">
+      <rect x="130.52" y="2038.04" width="363.65" height="36.9" class="m-shape"/>
+      <text x="312.34" y="2056.49" class="m-label t-label" text-anchor="middle">draw_board 'Thinking...', sleep 600ms &amp; machine_turn</text>
+    </g>
+    <g class="m-node m-node--diamond" id="mf9b8f8__node__HumanStillCan" data-role="vertex">
+      <polygon points="689.92,2003.29 833.02,2056.49 689.92,2109.69 546.83,2056.49" class="m-shape"/>
+      <text x="689.92" y="2056.49" class="m-label t-label" text-anchor="middle">has_valid_moves HUMAN?</text>
+    </g>
+    <g class="m-node m-node--rect" id="mf9b8f8__node__SetNextStatus" data-role="vertex">
+      <rect x="226.67" y="2229.69" width="171.35" height="36.9" class="m-shape"/>
+      <text x="312.34" y="2248.14" class="m-label t-label" text-anchor="middle">Set status 'Your turn...'</text>
+    </g>
+    <g class="m-node m-node--rect" id="mf9b8f8__node__SetAIPass" data-role="vertex">
+      <rect x="524.36" y="2229.69" width="331.12" height="36.9" class="m-shape"/>
+      <text x="689.92" y="2248.14" class="m-label t-label" text-anchor="middle">Set status 'MACHINE had no moves and passed!'</text>
+    </g>
+    <g class="m-edge-label">
+      <rect x="500.3" y="487.44" width="39.39" height="22.3" rx="11.15" ry="11.15" class="m-pill-bg"/>
+      <text x="519.99" y="498.59" class="m-label t-edge" text-anchor="middle">False</text>
+    </g>
+    <g class="m-edge-label">
+      <rect x="349.64" y="462.78" width="35.21" height="22.3" rx="11.15" ry="11.15" class="m-pill-bg"/>
+      <text x="367.25" y="473.93" class="m-label t-edge" text-anchor="middle">True</text>
+    </g>
+    <g class="m-edge-label">
+      <rect x="-51.69" y="755.16" width="31.21" height="22.3" rx="11.15" ry="11.15" class="m-pill-bg"/>
+      <text x="-36.09" y="766.31" class="m-label t-edge" text-anchor="middle">Yes</text>
+    </g>
+    <g class="m-edge-label">
+      <rect x="569.42" y="741.82" width="26.51" height="22.3" rx="11.15" ry="11.15" class="m-pill-bg"/>
+      <text x="582.67" y="752.97" class="m-label t-edge" text-anchor="middle">No</text>
+    </g>
+    <g class="m-edge-label">
+      <rect x="837.6" y="948.01" width="26.51" height="22.3" rx="11.15" ry="11.15" class="m-pill-bg"/>
+      <text x="850.85" y="959.16" class="m-label t-edge" text-anchor="middle">No</text>
+    </g>
+    <g class="m-edge-label">
+      <rect x="298.9" y="948.01" width="31.21" height="22.3" rx="11.15" ry="11.15" class="m-pill-bg"/>
+      <text x="314.5" y="959.16" class="m-label t-edge" text-anchor="middle">Yes</text>
+    </g>
+    <g class="m-edge-label">
+      <rect x="447.07" y="1341.17" width="70.66" height="22.3" rx="11.15" ry="11.15" class="m-pill-bg"/>
+      <text x="482.4" y="1352.32" class="m-label t-edge" text-anchor="middle">Arrow Keys</text>
+    </g>
+    <g class="m-edge-label">
+      <rect x="265.11" y="1358.02" width="98.77" height="36.6" rx="2" ry="2" class="m-pill-bg"/>
+      <text x="314.5" y="1376.32" class="m-label t-edge" text-anchor="middle"><tspan x="314.5" dy="-7.15px">KEY_RETURN / '</tspan><tspan x="314.5" dy="14.3px">'</tspan></text>
+    </g>
+    <g class="m-edge-label">
+      <rect x="69.66" y="1383.17" width="62.96" height="22.3" rx="11.15" ry="11.15" class="m-pill-bg"/>
+      <text x="101.14" y="1394.32" class="m-label t-edge" text-anchor="middle">KEY_ESC</text>
+    </g>
+    <g class="m-edge-label">
+      <rect x="111.15" y="1737.81" width="67.24" height="22.3" rx="11.15" ry="11.15" class="m-pill-bg"/>
+      <text x="144.77" y="1748.96" class="m-label t-edge" text-anchor="middle">Yes Invalid</text>
+    </g>
+    <g class="m-edge-label">
+      <rect x="422.88" y="1728.56" width="55" height="22.3" rx="11.15" ry="11.15" class="m-pill-bg"/>
+      <text x="450.38" y="1739.71" class="m-label t-edge" text-anchor="middle">No Valid</text>
+    </g>
+    <g class="m-edge-label">
+      <rect x="333.27" y="1967.52" width="31.21" height="22.3" rx="11.15" ry="11.15" class="m-pill-bg"/>
+      <text x="348.87" y="1978.67" class="m-label t-edge" text-anchor="middle">Yes</text>
+    </g>
+    <g class="m-edge-label">
+      <rect x="676.67" y="1904.44" width="26.51" height="22.3" rx="11.15" ry="11.15" class="m-pill-bg"/>
+      <text x="689.92" y="1915.59" class="m-label t-edge" text-anchor="middle">No</text>
+    </g>
+    <g class="m-edge-label">
+      <rect x="674.32" y="2158.54" width="31.21" height="22.3" rx="11.15" ry="11.15" class="m-pill-bg"/>
+      <text x="689.92" y="2169.69" class="m-label t-edge" text-anchor="middle">Yes</text>
+    </g>
+    <g class="m-edge-label">
+      <rect x="907.49" y="2045.34" width="26.51" height="22.3" rx="11.15" ry="11.15" class="m-pill-bg"/>
+      <text x="920.75" y="2056.49" class="m-label t-edge" text-anchor="middle">No</text>
+    </g>
+  </g>
+</svg>
