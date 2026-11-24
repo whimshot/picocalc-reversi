@@ -1,27 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <ctype.h>
-#include <math.h>
-#include <sys/stat.h>
-#include <errno.h>
-
-#include "pico/stdlib.h"
-#include "pico/time.h"
-#include "pico/bootrom.h"
-#include "pico/float.h"
-#include "pico/util/datetime.h"
-
-#if PICO_RP2350
-#include "picocalc_shell.h" // Only the RP2350 runs the shell
-#endif
-
-#include "drivers/display.h"
-#include "drivers/keyboard.h"
-#include "drivers/lcd.h"
-#include "drivers/picocalc.h"
-#include "drivers/sdcard.h"
-#include "drivers/southbridge.h"
 
 #include "picocalc-reversi.h"
 
@@ -159,7 +135,7 @@ void count_pieces(int *human_score, int *machine_score)
     }
 }
 
-void draw_board(const char *status_msg)
+void render_board(const char *status_msg, char (*b)[SIZE][SIZE])
 {
     int human_score, machine_score;
     count_pieces(&human_score, &machine_score);
@@ -197,15 +173,15 @@ void draw_board(const char *status_msg)
         printf("  x"); // ├──────┼──────┤
         for (int c = 0; c < SIZE; c++)
         {
-            if (board[r][c] == HUMAN)           // Set color for HUMAN pieces
+            if ((*b)[r][c] == HUMAN)           // Set color for HUMAN pieces
             {
                 printf("\033[91;5;208m");       // Red color for HUMAN
             }
-            else if (board[r][c] == MACHINE)    // Set color for MACHINE pieces
+            else if ((*b)[r][c] == MACHINE)    // Set color for MACHINE pieces
             {
                 printf("\033[94;5;208m");       // Blue color for MACHINE
             }
-            printf(" %c ", board[r][c]);        // Print the piece (HUMAN, MACHINE, or EMPTY)
+            printf(" %c ", (*b)[r][c]);        // Print the piece (HUMAN, MACHINE, or EMPTY)
             printf("\033[32;5;208m");           // Reset color to green for the board lines
             printf("x");
         }
@@ -255,7 +231,7 @@ void machine_turn(void)
     }
 }
 
-void place_cursor(int row, int col)
+void draw_selector(int row, int col)
 {
     printf("\033[H");
     if (row < 0 || row >= SIZE || col < 0 || col >= SIZE)
@@ -275,7 +251,7 @@ int main(void)
     // Display initial instructions and prompt for user input
     bool selected = false;
     bool running = true;
-    draw_board(status);
+    render_board(status, &board);
     while (running)
     {
         bool human_can_move = has_valid_moves(HUMAN);
@@ -286,11 +262,11 @@ int main(void)
             int human_score, machine_score;
             count_pieces(&human_score, &machine_score);
             if (human_score > machine_score)
-                draw_board("GAME OVER: You Win!");
+                render_board("GAME OVER: You Win!", &board);
             else if (machine_score > human_score)
-                draw_board("GAME OVER: MACHINE Wins!");
+                render_board("GAME OVER: MACHINE Wins!", &board);
             else
-                draw_board("GAME OVER: It's a Tie!");
+                render_board("GAME OVER: It's a Tie!", &board);
 
             printf("\nPress any key to restart...");
             getchar();
@@ -301,8 +277,8 @@ int main(void)
 
         if (human_can_move)
         {
-            draw_board(status);
-            place_cursor(cursor_row, cursor_col); // Place cursor at the current position
+            render_board(status, &board);
+            draw_selector(cursor_row, cursor_col); // Place cursor at the current position
             bool selected = false;
             while (!selected)
             {
@@ -373,15 +349,15 @@ int main(void)
         }
         else
         {
-            draw_board("No legal moves for you! Passing...");
-            // place_cursor(cursor_row, cursor_col); // Place cursor at the current position
+            render_board("No legal moves for you! Passing...", &board);
+            // draw_selector(cursor_row, cursor_col); // Place cursor at the current position
             sleep_ms(1500);
         }
 
         if (has_valid_moves(MACHINE))
         {
-            draw_board("MACHINE is thinking...");
-            // place_cursor(cursor_row, cursor_col); // Place cursor at the current position
+            render_board("MACHINE is thinking...", &board);
+            // draw_selector(cursor_row, cursor_col); // Place cursor at the current position
             sleep_ms(600);
             machine_turn();
             snprintf(status, sizeof(status), "Your turn. Select a move and press ENTER or ESC to quit:");

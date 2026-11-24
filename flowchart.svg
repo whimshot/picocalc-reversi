@@ -111,7 +111,7 @@
     </g>
     <g class="m-node m-node--rect" id="mf9b8f8__node__DrawStart" data-role="vertex">
       <rect x="259.46" y="243.8" width="274.37" height="36.9" class="m-shape"/>
-      <text x="396.64" y="262.25" class="m-label t-label" text-anchor="middle">draw_board: Initial board &amp; instructions</text>
+      <text x="396.64" y="262.25" class="m-label t-label" text-anchor="middle">render_board: Initial board &amp; instructions</text>
     </g>
     <g class="m-node m-node--diamond" id="mf9b8f8__node__MainLoop" data-role="vertex">
       <polygon points="396.64,340.7 484.83,380.64 396.64,420.59 308.46,380.64" class="m-shape"/>
@@ -131,7 +131,7 @@
     </g>
     <g class="m-node m-node--rect" id="mf9b8f8__node__CountScore" data-role="vertex">
       <rect x="-173.25" y="858.15" width="274.31" height="36.9" class="m-shape"/>
-      <text x="-36.09" y="876.6" class="m-label t-label" text-anchor="middle">count_pieces &amp; draw_board Winner/Tie</text>
+      <text x="-36.09" y="876.6" class="m-label t-label" text-anchor="middle">count_pieces &amp; render_board Winner/Tie</text>
     </g>
     <g class="m-node m-node--diamond" id="mf9b8f8__node__HumanCheck" data-role="vertex">
       <polygon points="582.67,831.46 692.37,876.6 582.67,921.73 472.98,876.6" class="m-shape"/>
@@ -143,11 +143,11 @@
     </g>
     <g class="m-node m-node--rect" id="mf9b8f8__node__DrawHuman" data-role="vertex">
       <rect x="214.13" y="1041.73" width="200.73" height="36.9" class="m-shape"/>
-      <text x="314.5" y="1060.18" class="m-label t-label" text-anchor="middle">draw_board &amp; place_cursor</text>
+      <text x="314.5" y="1060.18" class="m-label t-label" text-anchor="middle">render_board &amp; draw_selector</text>
     </g>
     <g class="m-node m-node--rect" id="mf9b8f8__node__HumanPass" data-role="vertex">
       <rect x="713.22" y="1041.73" width="275.26" height="36.9" class="m-shape"/>
-      <text x="850.85" y="1060.18" class="m-label t-label" text-anchor="middle">draw_board 'Passing...' &amp; sleep 1500ms</text>
+      <text x="850.85" y="1060.18" class="m-label t-label" text-anchor="middle">render_board 'Passing...' &amp; sleep 1500ms</text>
     </g>
     <g class="m-node m-node--diamond" id="mf9b8f8__node__InputLoop" data-role="vertex">
       <polygon points="314.5,1138.63 404.56,1179.03 314.5,1219.42 224.44,1179.03" class="m-shape"/>
@@ -183,7 +183,7 @@
     </g>
     <g class="m-node m-node--rect" id="mf9b8f8__node__AIThink" data-role="vertex">
       <rect x="130.52" y="2038.04" width="363.65" height="36.9" class="m-shape"/>
-      <text x="312.34" y="2056.49" class="m-label t-label" text-anchor="middle">draw_board 'Thinking...', sleep 600ms &amp; machine_turn</text>
+      <text x="312.34" y="2056.49" class="m-label t-label" text-anchor="middle">render_board 'Thinking...', sleep 600ms &amp; machine_turn</text>
     </g>
     <g class="m-node m-node--diamond" id="mf9b8f8__node__HumanStillCan" data-role="vertex">
       <polygon points="689.92,2003.29 833.02,2056.49 689.92,2109.69 546.83,2056.49" class="m-shape"/>

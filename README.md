@@ -72,12 +72,66 @@ This project is made possible by the [picocalc-text-starter](https://github.com/
 └── third_party
 ```
 
-## A Simplified Flowchart
-
-![A simplified flowchart of the PicoCalc Reversi program. The primary subject is a tall, vertically organized process diagram tracing initialization, repeated turn checks, human keyboard input and cursor movement, move validation, the machine AI turn, pass states, game-over scoring, and restart or shell exit. A neutral technical tone is conveyed with rounded boxes, rectangles, diamonds, and directional arrows on a light background. Transcribed text includes main Start; picocalc_init, init_board & lcd_set_font; draw_board: Initial board & instructions; while running?; Check human_can_move & machine_can_move; Both False?; count_pieces & draw_board Winner/Tie; Wait for getchar & call init_board; human_can_move?; draw_board 'Passing...' & sleep 1500ms; draw_board & place_cursor; while !selected; keyboard_get_key; Arrow Keys; KEY_RETURN; KEY_ESC; running = false & shell_exit; evaluate_move apply=true == 0?; Set status 'Invalid move. Try again:'; has_valid_moves MACHINE?; draw_board 'Thinking...', sleep 600ms & machine_turn; Set status 'Your turn...'; has_valid_moves HUMAN?; and Set status 'MACHINE had no moves and passed!' Labels also indicate True, False, Yes, and No at decision branches.](flowchart.svg)
-
 ## License
 
 Attribution-NonCommercial-ShareAlike 4.0 International
 
 See: [License]
+
+## A Simplified Flowchart
+
+```mermaid
+flowchart TD
+    Start([Start: main]) --> InitHW["Initialize Hardware & Display<br/>(picocalc_init, font_5x10, max backlights)"]
+    InitHW --> InitBoard["init_board()<br/>Clear 8x8 grid, set center 4 pieces,<br/>reset cursor to (0,0)"]
+    InitBoard --> SetVars["Set running = true<br/>render_board(status)"]
+    
+    SetVars --> LoopStart{"while (running)"}
+    LoopStart -- False --> End([Return 0 / Exit])
+    
+    LoopStart -- True --> CheckMoves["Check has_valid_moves(HUMAN)<br/>and has_valid_moves(MACHINE)"]
+    CheckMoves --> GameOver{"!human_can_move &&<br/>!machine_can_move?"}
+    
+    %% Game Over Branch
+    GameOver -- Yes --> Count["count_pieces(human, machine)"]
+    Count --> Winner{"Compare Scores"}
+    Winner -- "Human > Machine" --> DrawWin["render_board('You Win!')"]
+    Winner -- "Machine > Human" --> DrawLose["render_board('MACHINE Wins!')"]
+    Winner -- "Tie" --> DrawTie["render_board('It's a Tie!')"]
+    DrawWin & DrawLose & DrawTie --> WaitRestart["Prompt 'Press any key to restart...'<br/>getchar()"]
+    WaitRestart --> ResetGame["init_board() & reset status"]
+    ResetGame --> LoopStart
+    
+    %% Human Turn Branch
+    GameOver -- No --> HumanCanMove{"human_can_move?"}
+    HumanCanMove -- No --> HumanPass["render_board('No legal moves! Passing...')<br/>sleep_ms(1500)"]
+    HumanPass --> MachineCheck
+    
+    HumanCanMove -- Yes --> DrawHuman["render_board(status)<br/>draw_selector(cursor_row, cursor_col)"]
+    DrawHuman --> InputLoop{"while (!selected)<br/>Read keyboard_get_key()"}
+    
+    InputLoop -- "UP / DOWN / LEFT / RIGHT" --> MoveCursor["Update cursor_row / cursor_col<br/>(wrap around edges) & send ANSI cursor move"]
+    MoveCursor --> InputLoop
+    
+    InputLoop -- "ESC" --> EscExit["running = false<br/>shell_exit()"]
+    EscExit --> LoopStart
+    
+    InputLoop -- "RETURN / ENTER" --> EvalHuman{"evaluate_move(cursor, HUMAN, true) == 0?"}
+    EvalHuman -- "Yes (Invalid)" --> InvalidMsg["status = 'Invalid move. Try again:'"]
+    InvalidMsg --> LoopStart
+    EvalHuman -- "No (Valid, pieces flipped)" --> MachineCheck
+    
+    %% Machine Turn Branch
+    MachineCheck{"has_valid_moves(MACHINE)?"}
+    MachineCheck -- Yes --> MachineThink["render_board('MACHINE is thinking...')<br/>sleep_ms(600)"]
+    MachineThink --> MachineTurn["machine_turn()<br/>Scan board, score moves (flips + 20 for corners),<br/>apply best move"]
+    MachineTurn --> UpdateStatusH["status = 'Your turn...'"]
+    UpdateStatusH --> LoopStart
+    
+    MachineCheck -- No --> CheckHumanAgain{"has_valid_moves(HUMAN)?"}
+    CheckHumanAgain -- Yes --> MachinePass["status = 'MACHINE had no moves and passed!'"]
+    MachinePass --> LoopStart
+    CheckHumanAgain -- No --> LoopStart
+```
+
+![A simplified flowchart of the PicoCalc Reversi program. The primary subject is a tall, vertically organized process diagram tracing initialization, repeated turn checks, human keyboard input and cursor movement, move validation, the machine AI turn, pass states, game-over scoring, and restart or shell exit. A neutral technical tone is conveyed with rounded boxes, rectangles, diamonds, and directional arrows on a light background. Transcribed text includes main Start; picocalc_init, init_board & lcd_set_font; render_board: Initial board & instructions; while running?; Check human_can_move & machine_can_move; Both False?; count_pieces & render_board Winner/Tie; Wait for getchar & call init_board; human_can_move?; render_board 'Passing...' & sleep 1500ms; render_board & draw_selector; while !selected; keyboard_get_key; Arrow Keys; KEY_RETURN; KEY_ESC; running = false & shell_exit; evaluate_move apply=true == 0?; Set status 'Invalid move. Try again:'; has_valid_moves MACHINE?; render_board 'Thinking...', sleep 600ms & machine_turn; Set status 'Your turn...'; has_valid_moves HUMAN?; and Set status 'MACHINE had no moves and passed!' Labels also indicate True, False, Yes, and No at decision branches.](flowchart.svg)
