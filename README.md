@@ -2,10 +2,6 @@
 
 A graphical implementation of the classic board game **Reversi (Othello)** written in C for the [**ClockworkPi**](https://www.clockworkpi.com/) [**PicoCalc**](https://www.clockworkpi.com/picocalc) handheld device, built upon [picocalc-text-starter](https://github.com/BlairLeduc/picocalc-text-starter) by [BlairLeduc](https://github.com/BlairLeduc).
 
-# PicoCalc Reversi
-
-A graphical implementation of the classic board game Reversi (Othello) written in C for the ClockworkPi PicoCalc.
-
 ## Overview
 
 Play as **Black** against a built-in computer opponent (**White**). The game renders a graphical board directly on the PicoCalc's LCD screen with real-time score tracking, move validation, and automatic turn passing when no legal moves are available.
