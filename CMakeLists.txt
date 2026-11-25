@@ -87,7 +87,7 @@ add_executable(picocalc-reversi
         )
 
 pico_set_program_name(picocalc-reversi "Reversi for the PicoCalc")
-pico_set_program_version(picocalc-reversi "v2.0.1")
+pico_set_program_version(picocalc-reversi "v2.0.2")
 
 # Generate PIO header
 pico_generate_pio_header(picocalc-reversi ${CMAKE_CURRENT_LIST_DIR}/drivers/audio.pio)
