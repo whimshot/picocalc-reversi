@@ -54,11 +54,11 @@ jobs:
           # Rename the .uf2 file to include the board name so they don't overwrite each other
           for file in build/*.uf2; do
             base=$(basename "$file" .uf2)
-            cp "$file" "artifacts/${base}-${{ matrix.board }}.uf2"
+            cp "$file" "artifacts/${base}-${{ github.ref_name }}-${{ matrix.board }}.uf2"
           done
 
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: firmware-${{ matrix.board }}
           path: artifacts/*.uf2
