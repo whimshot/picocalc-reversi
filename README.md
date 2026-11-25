@@ -89,14 +89,14 @@ flowchart TD
     SetVars --> LoopStart{"while (running)"}
     LoopStart -- False --> End([Return 0 / Exit])
     
-    LoopStart -- True --> CheckMoves["Check has_valid_moves(HUMAN)<br/>and has_valid_moves(MACHINE)"]
+    LoopStart -- True --> CheckMoves["Check has_valid_moves(HUMAN)<br/>and has_valid_moves(BLACK)"]
     CheckMoves --> GameOver{"!human_can_move &&<br/>!machine_can_move?"}
     
     %% Game Over Branch
     GameOver -- Yes --> Count["count_pieces(human, machine)"]
     Count --> Winner{"Compare Scores"}
     Winner -- "Human > Machine" --> DrawWin["render_board('You Win!')"]
-    Winner -- "Machine > Human" --> DrawLose["render_board('MACHINE Wins!')"]
+    Winner -- "Machine > Human" --> DrawLose["render_board('BLACK Wins!')"]
     Winner -- "Tie" --> DrawTie["render_board('It's a Tie!')"]
     DrawWin & DrawLose & DrawTie --> WaitRestart["Prompt 'Press any key to restart...'<br/>getchar()"]
     WaitRestart --> ResetGame["init_board() & reset status"]
@@ -122,16 +122,16 @@ flowchart TD
     EvalHuman -- "No (Valid, pieces flipped)" --> MachineCheck
     
     %% Machine Turn Branch
-    MachineCheck{"has_valid_moves(MACHINE)?"}
-    MachineCheck -- Yes --> MachineThink["render_board('MACHINE is thinking...')<br/>sleep_ms(600)"]
+    MachineCheck{"has_valid_moves(BLACK)?"}
+    MachineCheck -- Yes --> MachineThink["render_board('BLACK is thinking...')<br/>sleep_ms(600)"]
     MachineThink --> MachineTurn["machine_turn()<br/>Scan board, score moves (flips + 20 for corners),<br/>apply best move"]
     MachineTurn --> UpdateStatusH["status = 'Your turn...'"]
     UpdateStatusH --> LoopStart
     
     MachineCheck -- No --> CheckHumanAgain{"has_valid_moves(HUMAN)?"}
-    CheckHumanAgain -- Yes --> MachinePass["status = 'MACHINE had no moves and passed!'"]
+    CheckHumanAgain -- Yes --> MachinePass["status = 'BLACK had no moves and passed!'"]
     MachinePass --> LoopStart
     CheckHumanAgain -- No --> LoopStart
 ```
 
-![A simplified flowchart of the PicoCalc Reversi program. The primary subject is a tall, vertically organized process diagram tracing initialization, repeated turn checks, human keyboard input and cursor movement, move validation, the machine AI turn, pass states, game-over scoring, and restart or shell exit. A neutral technical tone is conveyed with rounded boxes, rectangles, diamonds, and directional arrows on a light background. Transcribed text includes main Start; picocalc_init, init_board & lcd_set_font; render_board: Initial board & instructions; while running?; Check human_can_move & machine_can_move; Both False?; count_pieces & render_board Winner/Tie; Wait for getchar & call init_board; human_can_move?; render_board 'Passing...' & sleep 1500ms; render_board & draw_selector; while !selected; keyboard_get_key; Arrow Keys; KEY_RETURN; KEY_ESC; running = false & shell_exit; evaluate_move apply=true == 0?; Set status 'Invalid move. Try again:'; has_valid_moves MACHINE?; render_board 'Thinking...', sleep 600ms & machine_turn; Set status 'Your turn...'; has_valid_moves HUMAN?; and Set status 'MACHINE had no moves and passed!' Labels also indicate True, False, Yes, and No at decision branches.](flowchart.svg)
+![A simplified flowchart of the PicoCalc Reversi program. The primary subject is a tall, vertically organized process diagram tracing initialization, repeated turn checks, human keyboard input and cursor movement, move validation, the machine AI turn, pass states, game-over scoring, and restart or shell exit. A neutral technical tone is conveyed with rounded boxes, rectangles, diamonds, and directional arrows on a light background. Transcribed text includes main Start; picocalc_init, init_board & lcd_set_font; render_board: Initial board & instructions; while running?; Check human_can_move & machine_can_move; Both False?; count_pieces & render_board Winner/Tie; Wait for getchar & call init_board; human_can_move?; render_board 'Passing...' & sleep 1500ms; render_board & draw_selector; while !selected; keyboard_get_key; Arrow Keys; KEY_RETURN; KEY_ESC; running = false & shell_exit; evaluate_move apply=true == 0?; Set status 'Invalid move. Try again:'; has_valid_moves BLACK?; render_board 'Thinking...', sleep 600ms & machine_turn; Set status 'Your turn...'; has_valid_moves HUMAN?; and Set status 'BLACK had no moves and passed!' Labels also indicate True, False, Yes, and No at decision branches.](flowchart.svg)

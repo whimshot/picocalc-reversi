@@ -179,7 +179,7 @@
     </g>
     <g class="m-node m-node--diamond" id="mf9b8f8__node__AICheck" data-role="vertex">
       <polygon points="501.13,1772.48 653.39,1827.89 501.13,1883.29 348.87,1827.89" class="m-shape"/>
-      <text x="501.13" y="1827.89" class="m-label t-label" text-anchor="middle">has_valid_moves MACHINE?</text>
+      <text x="501.13" y="1827.89" class="m-label t-label" text-anchor="middle">has_valid_moves BLACK?</text>
     </g>
     <g class="m-node m-node--rect" id="mf9b8f8__node__AIThink" data-role="vertex">
       <rect x="130.52" y="2038.04" width="363.65" height="36.9" class="m-shape"/>
@@ -195,7 +195,7 @@
     </g>
     <g class="m-node m-node--rect" id="mf9b8f8__node__SetAIPass" data-role="vertex">
       <rect x="524.36" y="2229.69" width="331.12" height="36.9" class="m-shape"/>
-      <text x="689.92" y="2248.14" class="m-label t-label" text-anchor="middle">Set status 'MACHINE had no moves and passed!'</text>
+      <text x="689.92" y="2248.14" class="m-label t-label" text-anchor="middle">Set status 'BLACK had no moves and passed!'</text>
     </g>
     <g class="m-edge-label">
       <rect x="500.3" y="487.44" width="39.39" height="22.3" rx="11.15" ry="11.15" class="m-pill-bg"/>

@@ -30,31 +30,28 @@
 #include "drivers/sdcard.h"
 #include "drivers/southbridge.h"
 
+#include "graphic-game-board.h"
 
 /* ─── Constants / Macros ──────────────────────────────────────────────── */
 
-#define SIZE 8
-#define EMPTY ' '
-#define HUMAN 'H'   // Black
-#define MACHINE 'M' // White
-
-const int top_left_row = 5; 
-const int top_left_col = 5; 
-const int cell_width = 4; 
-const int cell_height = 2; 
+const int top_left_row = 5;
+const int top_left_col = 5;
+const int cell_width = 4;
+const int cell_height = 2;
 
 /* ─── Function Prototypes ─────────────────────────────────────────────── */
 
+#define COLOR_TEXT RGB565(224, 224, 224)
+
+int black_score, white_score;
+bool game_started;
+bool selected;
+
 void shell_exit(void);
-void init_board(void);
 bool in_bounds(int r, int c);
 int evaluate_move(int r, int c, char piece, bool apply);
 bool has_valid_moves(char piece);
 void count_pieces(int *human_score, int *machine_score);
-void draw_board(const char *status_msg);
 void machine_turn(void);
-void read_move(char *col_out, char *row_out);
-void draw_selector(int row, int col);
-
 
 #endif /* PICOCALC_REVERSI_H */

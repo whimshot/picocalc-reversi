@@ -1,23 +1,17 @@
 
 #include "picocalc-reversi.h"
-
-#define SIZE 8
-#define EMPTY ' '
-#define HUMAN 'H'   // Black
-#define MACHINE 'M' // White
+#include "graphic-game-board.h"
 
 volatile bool user_interrupt = false;
-extern void readline(char *buffer, size_t size);
+// extern void readline(char *buffer, size_t size);
 uint8_t columns = 64;
 
-char board[SIZE][SIZE];
-int cursor_row = 0; // Current cursor row position (0-7)
-int cursor_col = 0; // Current cursor column position (0-7)
-char status[128] = "Select a square and press ENTER to place piece\nor press ESC to quit:";
+// char status[128] = "Select a square and press ENTER to place piece\nor press ESC to quit:";
 
 const int dr[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
 const int dc[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
 
+char score[128];
 void shell_exit()
 {
 #if PICO_RP2350
@@ -34,26 +28,9 @@ void shell_exit()
 #endif
 }
 
-void init_board(void)
-{
-    for (int r = 0; r < SIZE; r++)
-    {
-        for (int c = 0; c < SIZE; c++)
-        {
-            board[r][c] = EMPTY;
-        }
-    }
-    board[3][3] = MACHINE;
-    board[3][4] = HUMAN;
-    board[4][3] = HUMAN;
-    board[4][4] = MACHINE;
-    cursor_row = 0; // Reset cursor position to top-most row
-    cursor_col = 0; // Reset cursor position to top-most column
-}
-
 bool in_bounds(int r, int c)
 {
-    return r >= 0 && r < SIZE && c >= 0 && c < SIZE;
+    return r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE;
 }
 
 // Returns number of pieces flipped if 'piece' is placed at (r, c).
@@ -63,7 +40,7 @@ int evaluate_move(int r, int c, char piece, bool apply)
     if (!in_bounds(r, c) || board[r][c] != EMPTY)
         return 0;
 
-    char opponent = (piece == HUMAN) ? MACHINE : HUMAN;
+    char opponent = (piece == WHITE) ? BLACK : WHITE;
     int total_flipped = 0;
 
     for (int d = 0; d < 8; d++)
@@ -88,7 +65,7 @@ int evaluate_move(int r, int c, char piece, bool apply)
                 int fc = c + dc[d];
                 for (int i = 0; i < count; i++)
                 {
-                    if (fr < SIZE && fc < SIZE) // Ensure we don't go out of bounds
+                    if (fr < BOARD_SIZE && fc < BOARD_SIZE) // Ensure we don't go out of bounds
                     {
                         board[fr][fc] = piece;
                         fr += dr[d];
@@ -102,15 +79,30 @@ int evaluate_move(int r, int c, char piece, bool apply)
     if (apply && total_flipped > 0)
     {
         board[r][c] = piece;
+        switch (piece)
+        {
+        case WHITE:
+            place_piece(&white_disc, selector_r, selector_c);
+            redraw_board(&board);
+            count_pieces(&black_score, &white_score);
+            printf("\033[HWhite: %d Black: %d", white_score, black_score);
+            break;
+        case BLACK:
+            place_piece(&black_disc, selector_r, selector_c);
+            redraw_board(&board);
+            count_pieces(&black_score, &white_score);
+            printf("\033[HWhite: %d Black: %d", white_score, black_score);
+            break;
+        }
     }
     return total_flipped;
 }
 
 bool has_valid_moves(char piece)
 {
-    for (int r = 0; r < SIZE; r++)
+    for (int r = 0; r < BOARD_SIZE; r++)
     {
-        for (int c = 0; c < SIZE; c++)
+        for (int c = 0; c < BOARD_SIZE; c++)
         {
             if (evaluate_move(r, c, piece, false) > 0)
                 return true;
@@ -119,96 +111,34 @@ bool has_valid_moves(char piece)
     return false;
 }
 
-void count_pieces(int *human_score, int *machine_score)
+void count_pieces(int *black_score, int *white_score)
 {
-    *human_score = 0;
-    *machine_score = 0;
-    for (int r = 0; r < SIZE; r++)
+    // debug_printf("Called: %s\n", __func__);
+    *black_score = 0;
+    *white_score = 0;
+    for (int r = 0; r < BOARD_SIZE; r++)
     {
-        for (int c = 0; c < SIZE; c++)
+        for (int c = 0; c < BOARD_SIZE; c++)
         {
-            if (board[r][c] == HUMAN)
-                (*human_score)++;
-            else if (board[r][c] == MACHINE)
-                (*machine_score)++;
+            if (board[r][c] == BLACK)
+                (*black_score)++;
+            else if (board[r][c] == WHITE)
+                (*white_score)++;
         }
     }
-}
-
-void render_board(const char *status_msg, char (*b)[SIZE][SIZE])
-{
-    int human_score, machine_score;
-    count_pieces(&human_score, &machine_score);
-
-    // Clear screen and move cursor to top-left
-    // printf("\033[2J\033[H");
-
-    // printf("\033[?25l"); // Hide cursor
-
-    // Switch to DEC Special Character Set and draw a box
-    // Visual representation of what will be drawn:
-    //   ┌───┬───┐
-    //   │   │   │
-    //   ├───┼───┤
-    //   │   │   │
-    //   └───┴───┘
-    //
-    // DEC Special Character mappings:
-    // l = ┌ (top-left)     q = ─ (horizontal)   k = ┐ (top-right)
-    // x = │ (vertical)     w = ┬ (top-tee)
-    // t = ├ (left-tee)     n = ┼ (cross)        u = ┤ (right-tee)
-    // m = └ (bottom-left)  v = ┴ (bottom-tee)   j = ┘ (bottom-right)
-
-    printf("\033[2J"); // Clear screen
-    printf("\033[H\033[?25h"); // Move cursor to top-left and show cursor
-    printf("Human (\033[91;5;208m%c\033[37;5;208m): %d\t", HUMAN, human_score);
-    printf("Machine (\033[94;5;208m%c\033[37;5;208m): %d\n\n\n", MACHINE, machine_score);
-
-    printf("\033(0"); // Select DEC Special Character Set for G0
-    printf("\033[32;5;208m"); // Set foreground colour to green
-    printf("  lqqqwqqqwqqqwqqqwqqqwqqqwqqqwqqqk\n"); // ┌──────┬──────┐
-
-    for (int r = 0; r < SIZE; r++)
-    {
-        printf("  x"); // ├──────┼──────┤
-        for (int c = 0; c < SIZE; c++)
-        {
-            if ((*b)[r][c] == HUMAN)           // Set color for HUMAN pieces
-            {
-                printf("\033[91;5;208m");       // Red color for HUMAN
-            }
-            else if ((*b)[r][c] == MACHINE)    // Set color for MACHINE pieces
-            {
-                printf("\033[94;5;208m");       // Blue color for MACHINE
-            }
-            printf(" %c ", (*b)[r][c]);        // Print the piece (HUMAN, MACHINE, or EMPTY)
-            printf("\033[32;5;208m");           // Reset color to green for the board lines
-            printf("x");
-        }
-        printf("\n");
-        if (r < SIZE - 1)
-        {
-            printf("  tqqqnqqqnqqqnqqqnqqqnqqqnqqqnqqqu\n"); // ├──────┼──────┤
-        }
-    }
-    printf("  mqqqvqqqvqqqvqqqvqqqvqqqvqqqvqqqj\n"); // └──────┴──────┘
-    printf("\033(B\033[?25h");                       // Select ASCII for G0 and show cursor
-    printf("\033[0m");                               // Reset colors
-
-    // Display scores and status message
-    printf("%s\n", status_msg, top_left_row);
 }
 
 // Simple MACHINE prioritizing corners, then maximum flips
 void machine_turn(void)
 {
+    sleep_ms(1000);
     int best_r = -1, best_c = -1, best_score = -1;
 
-    for (int r = 0; r < SIZE; r++)
+    for (int r = 0; r < BOARD_SIZE; r++)
     {
-        for (int c = 0; c < SIZE; c++)
+        for (int c = 0; c < BOARD_SIZE; c++)
         {
-            int flips = evaluate_move(r, c, MACHINE, false);
+            int flips = evaluate_move(r, c, WHITE, false);
             if (flips > 0)
             {
                 int weight = flips;
@@ -227,144 +157,207 @@ void machine_turn(void)
 
     if (best_r != -1)
     {
-        evaluate_move(best_r, best_c, MACHINE, true);
+        evaluate_move(best_r, best_c, WHITE, true);
     }
 }
 
-void draw_selector(int row, int col)
+void restart_game()
 {
-    printf("\033[H");
-    if (row < 0 || row >= SIZE || col < 0 || col >= SIZE)
-        return;
-    int new_row = top_left_row + row * cell_height; // Calculate the cursor row based on the cell height and offset
-    int new_col = top_left_col + col * cell_width; // Calculate the cursor column based on the cell width and offset
-    printf("\033[%d;%dH", new_row, new_col);
+    selected = false;
+    game_started = false;
+    init_board(&board);
+    count_pieces(&black_score, &white_score);
+    render_board(&board);
+    printf("\033[32H\033[2KSelect a square and press ENTER");
+}
+
+void sidebars(void)
+{
+    int start_row = 4;
+    int left_column = 0;
+    int right_column = 63;
+    char left_side[] = "ESC to quit";
+    char right_side[] = "R to restart";
+    int row = start_row;
+    for (int i = 0; i < strlen(left_side); i++)
+    {
+        printf("\033[%d;%dH%c", row, left_column, left_side[i]);
+        row++;
+    }
+    row = start_row;
+    for (int i = 0; i < strlen(right_side); i++)
+    {
+        printf("\033[%d;%dH%c", row, right_column, right_side[i]);
+        row++;
+    }
+    lcd_set_bold(false);
 }
 
 int main(void)
 {
-    picocalc_init();            // Initialize PicoCalc hardware and drivers
-    init_board();               // Initialize the Reversi board with starting pieces
-    lcd_set_font(&font_5x10);   // Set the LCD font to 5x10 pixel font for better readability
-    sb_write_lcd_backlight(255); // Set the LCD backlight to maximum brightness
-    sb_write_keyboard_backlight(255);  // Set the keyboard backlight to maximum brightness
-    // Display initial instructions and prompt for user input
-    bool selected = false;
+    picocalc_init(); // Initialize PicoCalc hardware and drivers
+    stdio_init_all();
+    init_board(&board); // Initialize the Reversi board with starting pieces
+
+    lcd_enable_cursor(false); // Turn cursor off
+    lcd_set_foreground(COLOR_TEXT);
+    lcd_set_bold(true);
+    // lcd_set_font(&font_5x10);         // Set the LCD font to 5x10 pixel font for better readability
+    sb_write_lcd_backlight(255);      // Set the LCD backlight to maximum brightness
+    sb_write_keyboard_backlight(255); // Set the keyboard backlight to maximum brightness
+                                      // Display initial instructions and prompt for user input
+    game_started = false;             // the game hasn't started yet
+    selected = false;
     bool running = true;
-    render_board(status, &board);
+    render_board(&board);
+    sidebars();
     while (running)
     {
-        bool human_can_move = has_valid_moves(HUMAN);
-        bool machine_can_move = has_valid_moves(MACHINE);
+        bool black_can_move = has_valid_moves(BLACK);
+        bool white_can_move = has_valid_moves(WHITE);
 
-        if (!human_can_move && !machine_can_move)
+        // both sides are out of moves the game is over.
+        if (!black_can_move && !white_can_move)
         {
-            int human_score, machine_score;
-            count_pieces(&human_score, &machine_score);
-            if (human_score > machine_score)
-                render_board("GAME OVER: You Win!", &board);
-            else if (machine_score > human_score)
-                render_board("GAME OVER: MACHINE Wins!", &board);
+            // Check for end of game conditions. Outcome.
+            count_pieces(&black_score, &white_score);
+            if (black_score > white_score)
+            {
+                redraw_board(&board);
+                printf("\033[H\033[2KWhite: %d Black: %d. Black Wins!", white_score, black_score);
+            }
+            else if (white_score > black_score)
+            {
+                redraw_board(&board);
+                printf("\033[H\033[2KWhite: %d Black: %d. White Wins!", white_score, black_score);
+            }
             else
-                render_board("GAME OVER: It's a Tie!", &board);
+            {
+                redraw_board(&board);
+                printf("\033[H\033[2KWhite: %d Black: %d. It's A TIE!", white_score, black_score);
+            }
+            uint8_t key = (uint8_t)keyboard_get_key(); // Get next key pressed
+            switch (key)
+            {
+            case 'r':
+            case 'R':
+                selected = false;
+                game_started = false;
+                init_board(&board);
+                count_pieces(&black_score, &white_score);
+                render_board(&board);
+                printf("\033[H\033[2KWhite: %d Black: %d", white_score, black_score);
+                printf("\033[32H\033[2KSelect a square and press ENTER");
+                break;
 
-            printf("\nPress any key to restart...");
-            getchar();
-            init_board();
-            snprintf(status, sizeof(status), "Select a square and press ENTER to place piece\nor press ESC to quit:");
-            continue;
+            case KEY_ESC:
+                running = false;
+                shell_exit(); // Exit the shell cleanly
+                break;
+            }
         }
 
-        if (human_can_move)
+        if (black_can_move)
         {
-            render_board(status, &board);
-            draw_selector(cursor_row, cursor_col); // Place cursor at the current position
-            bool selected = false;
+            redraw_board(&board);
+            count_pieces(&black_score, &white_score);
+            printf("\033[H\033[2KWhite: %d Black: %d", white_score, black_score);
+            printf("\033[32H\033[2KSelect a square and press ENTER");
+            draw_selector(selector_r, selector_c); // Place cursor at the current position
+            selected = false;
             while (!selected)
             {
                 uint8_t key = (uint8_t)keyboard_get_key(); // Get next key pressed
                 switch (key)
                 {
-                    case KEY_UP:
-                        cursor_row--; // Update cursor row position
-                        if (cursor_row < 0) 
-                        {
-                            cursor_row = SIZE - 1; // Wrap around to bottom if needed
-                            printf("\033[14B"); // Return cursor to bottom of the board
-                        }
-                        else {
-                            printf("\033[2A"); // Move cursor up two lines
-                        }
-                        break;
-                    case KEY_DOWN:
-                        cursor_row++; // Update cursor row position
-                        if (cursor_row >= SIZE) 
-                        {
-                            cursor_row = 0; // Wrap around to top if needed
-                            printf("\033[14A"); // Reset cursor to top of the board
-                        }
-                        else {
-                            printf("\033[2B"); // Move cursor up two lines
-                        }
-                        break;
-                    case KEY_RIGHT:
-                        cursor_col++; // Update cursor column position
-                        if (cursor_col >= SIZE)
-                        {
-                            cursor_col = 0; // Wrap around to left if needed
-                            printf("\033[28D"); // Move cursor right four columns
-                        }
-                        else {
-                            printf("\033[4C"); // Move cursor right four columns
-                        }
-                        break;
-                    case KEY_LEFT:
-                        cursor_col--;// Update cursor column position
-                        if (cursor_col < 0)
-                        {
-                            cursor_col = SIZE - 1; // Wrap around to right if needed
-                            printf("\033[28C"); // Move cursor left four columns
-                        }
-                        else {
-                            printf("\033[4D"); // Move cursor left four columns
-                        }
-                        break;
-                    case KEY_RETURN:
-                    case '\n':
-                        selected = true; // Set selected to true to exit the loop
-                        break;
+                case KEY_UP:
+                    if (selector_r > 0)
+                    {
+                        draw_selector(selector_r - 1, selector_c);
+                    }
+                    break;
 
-                    case KEY_ESC:
-                        running = false;
-                        shell_exit(); // Exit the shell cleanly
-                        break;
+                case KEY_DOWN:
+                    if (selector_r < BOARD_SIZE - 1)
+                    {
+                        draw_selector(selector_r + 1, selector_c);
+                    }
+                    break;
+
+                case KEY_RIGHT:
+                    if (selector_c < BOARD_SIZE - 1)
+                    {
+                        draw_selector(selector_r, selector_c + 1);
+                    }
+                    break;
+
+                case KEY_LEFT:
+                    if (selector_c > 0)
+                    {
+                        draw_selector(selector_r, selector_c - 1);
+                    }
+                    break;
+
+                case KEY_RETURN:
+                    selected = true; // Set selected to true to exit the loop
+                    if (!game_started)
+                        game_started = true;
+                    break;
+
+                case KEY_ESC:
+                    running = false;
+                    shell_exit(); // Exit the shell cleanly
+                    break;
+
+                case KEY_DEL:
+                    reset_usb_boot(0, 0);
+                    break;
+
+                case 'r':
+                case 'R':
+                    selected = false;
+                    game_started = false;
+                    init_board(&board);
+                    count_pieces(&black_score, &white_score);
+                    render_board(&board);
+                    printf("\033[H\033[2KWhite: %d Black: %d", white_score, black_score);
+                    printf("\033[32H\033[2KSelect a square and press ENTER");
+                    break;
+
+                default:
+                    break;
                 }
             }
-
-            if (evaluate_move(cursor_row, cursor_col, HUMAN, true) == 0)
+            if (game_started)
             {
-                snprintf(status, sizeof(status), "Invalid move. Try again:");
-                continue;
+                if (evaluate_move(selector_r, selector_c, BLACK, true) == 0)
+                {
+                    printf("\033[32H\033[2KInvalid move. Try again:");
+                    continue;
+                }
             }
         }
-        else
+        else if (game_started)
         {
-            render_board("No legal moves for you! Passing...", &board);
-            // draw_selector(cursor_row, cursor_col); // Place cursor at the current position
+            redraw_board(&board);
+            count_pieces(&black_score, &white_score);
+            printf("\033[H\033[2KWhite: %d Black: %d", white_score, black_score);
             sleep_ms(1500);
         }
 
-        if (has_valid_moves(MACHINE))
+        if (has_valid_moves(WHITE) && game_started)
         {
-            render_board("MACHINE is thinking...", &board);
-            // draw_selector(cursor_row, cursor_col); // Place cursor at the current position
+            place_piece(&black_disc, selector_r, selector_c);
+            redraw_board(&board);
+            count_pieces(&black_score, &white_score);
+            printf("\033[H\033[2KWhite: %d Black: %d", white_score, black_score);
             sleep_ms(600);
             machine_turn();
-            snprintf(status, sizeof(status), "Your turn. Select a move and press ENTER or ESC to quit:");
+            printf("\033[32H\033[2KSelect a square and press ENTER.");
         }
-        else if (has_valid_moves(HUMAN))
+        else if (has_valid_moves(BLACK) && game_started)
         {
-            snprintf(status, sizeof(status), "MACHINE had no moves and passed!");
+            printf("\033[32H\033[2KWhite had no moves and passed!");
         }
     }
     return 0;

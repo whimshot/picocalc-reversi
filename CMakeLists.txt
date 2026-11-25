@@ -59,6 +59,8 @@ target_include_directories(fatfs PUBLIC ${FATFS_DIR})
 add_executable(picocalc-reversi
         picocalc-reversi.c
         picocalc-reversi.h
+        graphic-game-board.c
+        graphic-game-board.h
         drivers/audio.c
         drivers/audio.h
         drivers/clib.c
@@ -85,14 +87,14 @@ add_executable(picocalc-reversi
         )
 
 pico_set_program_name(picocalc-reversi "Reversi for the PicoCalc")
-pico_set_program_version(picocalc-reversi "v1.0.3")
+pico_set_program_version(picocalc-reversi "v2.0.0")
 
 # Generate PIO header
 pico_generate_pio_header(picocalc-reversi ${CMAKE_CURRENT_LIST_DIR}/drivers/audio.pio)
 
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(picocalc-reversi 0)
-pico_enable_stdio_usb(picocalc-reversi 0)
+pico_enable_stdio_usb(picocalc-reversi 1)
 
 # Add the standard library to the build
 target_link_libraries(picocalc-reversi
