@@ -1,0 +1,41 @@
+name: Build PicoCalc App on Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install ARM toolchain and CMake
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential
+
+      - name: Set up Raspberry Pi Pico SDK
+        run: |
+          git clone --depth 1 --branch 2.0.0 https://github.com /opt/pico-sdk
+          cd /opt/pico-sdk && git submodule update --init
+          echo "PICO_SDK_PATH=/opt/pico-sdk" >> $GITHUB_ENV
+
+      - name: Build project
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make -j$(nproc)
+
+      - name: Upload UF2 to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/*.uf2
