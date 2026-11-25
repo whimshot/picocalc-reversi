@@ -299,6 +299,7 @@ int main(void)
                     break;
 
                 case KEY_RETURN:
+                case KEY_ENTER:
                     selected = true; // Set selected to true to exit the loop
                     if (!game_started)
                         game_started = true;
