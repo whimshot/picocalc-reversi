@@ -33,6 +33,40 @@ project(picocalc-reversi C CXX ASM)
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
+set(SOURCES
+    picocalc-reversi.c
+    picocalc-reversi.h
+    graphic-game-board.c
+    graphic-game-board.h
+    drivers/audio.c
+    drivers/audio.h
+    drivers/clib.c
+    drivers/diskio.c
+    drivers/display.c
+    drivers/display.h
+    drivers/filesystem.c
+    drivers/filesystem.h
+    drivers/font-5x10.c
+    drivers/font-8x10.c
+    drivers/font.h
+    drivers/keyboard.c
+    drivers/keyboard.h
+    drivers/lcd.c
+    drivers/lcd.h
+    drivers/onboard_led.c
+    drivers/onboard_led.h
+    drivers/picocalc.c
+    drivers/picocalc.h
+    drivers/sdcard.c
+    drivers/sdcard.h
+    drivers/southbridge.c
+    drivers/southbridge.h
+)
+
+if(PICO_BOARD STREQUAL "pico2" OR PICO_BOARD STREQUAL "pimoroni_pico_plus2_rp2350")
+    list(APPEND SOURCES screenshot/lcdshot.c screenshot/lcdshot.h)
+endif()
+
 # ChaN's FatFs (http://elm-chan.org/fsw/ff/) for the SD card. The Pico SDK
 # carries a copy for TinyUSB. ff.h includes "ffconf.h" from its own
 # directory, so the sources are copied into the build tree beside our
@@ -56,37 +90,7 @@ target_include_directories(fatfs PUBLIC ${FATFS_DIR})
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(picocalc-reversi
-        picocalc-reversi.c
-        picocalc-reversi.h
-        graphic-game-board.c
-        graphic-game-board.h
-        screenshot/lcdshot.c
-        screenshot/lcdshot.h
-        drivers/audio.c
-        drivers/audio.h
-        drivers/clib.c
-        drivers/diskio.c
-        drivers/display.c
-        drivers/display.h
-        drivers/filesystem.c
-        drivers/filesystem.h
-        drivers/font-5x10.c
-        drivers/font-8x10.c
-        drivers/font.h
-        drivers/keyboard.c
-        drivers/keyboard.h
-        drivers/lcd.c
-        drivers/lcd.h
-        drivers/onboard_led.c
-        drivers/onboard_led.h
-        drivers/picocalc.c
-        drivers/picocalc.h
-        drivers/sdcard.c
-        drivers/sdcard.h
-        drivers/southbridge.c
-        drivers/southbridge.h
-        )
+add_executable(picocalc-reversi ${SOURCES})
 
 pico_set_program_name(picocalc-reversi "Reversi for the PicoCalc")
 pico_set_program_version(picocalc-reversi "v2.0.6")
