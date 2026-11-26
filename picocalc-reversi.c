@@ -82,7 +82,7 @@ int evaluate_move(int r, int c, char piece, bool apply)
         switch (piece)
         {
         case WHITE:
-            place_piece(&white_disc, selector_r, selector_c);
+            place_piece(&white_disc, r, c);
             redraw_board(&board);
             count_pieces(&black_score, &white_score);
             printf("\033[HWhite: %d Black: %d", white_score, black_score);
