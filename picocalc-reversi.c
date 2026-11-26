@@ -307,6 +307,7 @@ int main(void)
 
                 case KEY_ESC:
                     running = false;
+                    selected = true; // close the !selected while loop
                     shell_exit(); // Exit the shell cleanly
                     break;
 
