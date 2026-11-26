@@ -80,16 +80,16 @@ const uint16_t black_disc[SPRITE_SIZE * SPRITE_SIZE] = {
 // create the board array
 // static uint8_t board[BOARD_SIZE][BOARD_SIZE];
 // starting position for the selection box
-int selector_r = 2;
-int selector_c = 3;
+int selector_r = START_POSITION_ROW;
+int selector_c = START_POSITION_COLUMN;
 
 // setup the starting positions
 uint8_t board[BOARD_SIZE][BOARD_SIZE];
 
 void init_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE])
 {
-    selector_r = 2;
-    selector_c = 3;
+    selector_r = START_POSITION_ROW;
+    selector_c = START_POSITION_COLUMN;
     memset((*b), EMPTY, sizeof((*b)));
     // Standard Reversi starting position
     (*b)[3][3] = WHITE;

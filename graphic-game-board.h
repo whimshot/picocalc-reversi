@@ -44,6 +44,9 @@
 #define COLOR_WHITE_DISC RGB565(224, 224, 224)
 #define COLOR_SELECTION_BOX RGB565(255, 215, 0)
 
+#define START_POSITION_ROW 2
+#define START_POSITION_COLUMN 3
+
 // --- typedefs and declarations ---
 
 extern const uint16_t white_disc[SPRITE_SIZE * SPRITE_SIZE];
