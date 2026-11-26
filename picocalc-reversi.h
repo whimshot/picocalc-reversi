@@ -41,11 +41,15 @@ const int cell_height = 2;
 
 /* ─── Function Prototypes ─────────────────────────────────────────────── */
 
+// needed by keyboard.c in drivers
+volatile bool user_interrupt = false;
+
 #define COLOR_TEXT RGB565(224, 224, 224)
 
 int black_score, white_score;
 bool game_started;
-bool selected;
+bool game_over;
+bool move_selected;
 
 void shell_exit(void);
 bool in_bounds(int r, int c);

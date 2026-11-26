@@ -2,12 +2,6 @@
 #include "picocalc-reversi.h"
 #include "graphic-game-board.h"
 
-volatile bool user_interrupt = false;
-// extern void readline(char *buffer, size_t size);
-uint8_t columns = 64;
-
-// char status[128] = "Select a square and press ENTER to place piece\nor press ESC to quit:";
-
 const int dr[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
 const int dc[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
 
@@ -131,7 +125,6 @@ void count_pieces(int *black_score, int *white_score)
 // Simple MACHINE prioritizing corners, then maximum flips
 void machine_turn(void)
 {
-    sleep_ms(1000);
     int best_r = -1, best_c = -1, best_score = -1;
 
     for (int r = 0; r < BOARD_SIZE; r++)
@@ -161,22 +154,12 @@ void machine_turn(void)
     }
 }
 
-void restart_game()
-{
-    selected = false;
-    game_started = false;
-    init_board(&board);
-    count_pieces(&black_score, &white_score);
-    render_board(&board);
-    printf("\033[32H\033[2KSelect a square and press ENTER");
-}
-
 void sidebars(void)
 {
-    int start_row = 4;
+    int start_row = 3;
     int left_column = 0;
     int right_column = 63;
-    char left_side[] = "ESC to quit";
+    char left_side[] = "ESC to Quit DEL to BOOTSEL";
     char right_side[] = "R to restart";
     int row = start_row;
     for (int i = 0; i < strlen(left_side); i++)
@@ -190,7 +173,16 @@ void sidebars(void)
         printf("\033[%d;%dH%c", row, right_column, right_side[i]);
         row++;
     }
-    lcd_set_bold(false);
+}
+
+void restart_game()
+{
+    move_selected = false;
+    game_started = false;
+    init_board(&board);
+    count_pieces(&black_score, &white_score);
+    render_board(&board);
+    printf("\033[32H\033[2KSelect a square and press ENTER");
 }
 
 int main(void)
@@ -202,12 +194,11 @@ int main(void)
     lcd_enable_cursor(false); // Turn cursor off
     lcd_set_foreground(COLOR_TEXT);
     lcd_set_bold(true);
-    // lcd_set_font(&font_5x10);         // Set the LCD font to 5x10 pixel font for better readability
     sb_write_lcd_backlight(255);      // Set the LCD backlight to maximum brightness
     sb_write_keyboard_backlight(255); // Set the keyboard backlight to maximum brightness
                                       // Display initial instructions and prompt for user input
     game_started = false;             // the game hasn't started yet
-    selected = false;
+    move_selected = false;
     bool running = true;
     render_board(&board);
     sidebars();
@@ -221,27 +212,36 @@ int main(void)
         {
             // Check for end of game conditions. Outcome.
             count_pieces(&black_score, &white_score);
-            if (black_score > white_score)
+            if (black_score > white_score) // Black wins.
             {
                 redraw_board(&board);
                 printf("\033[H\033[2KWhite: %d Black: %d. Black Wins!", white_score, black_score);
+                printf("\033[32H\033[2KGAME OVER!");
+                erase_selector();
+                game_over = true;
             }
-            else if (white_score > black_score)
+            else if (white_score > black_score) // White wins.
             {
                 redraw_board(&board);
                 printf("\033[H\033[2KWhite: %d Black: %d. White Wins!", white_score, black_score);
+                printf("\033[32H\033[2KGAME OVER!");
+                erase_selector();
+                game_over = true;
             }
-            else
+            else // The game is a tie.
             {
                 redraw_board(&board);
                 printf("\033[H\033[2KWhite: %d Black: %d. It's A TIE!", white_score, black_score);
+                printf("\033[32H\033[2KGAME OVER!");
+                erase_selector();
+                game_over = true;
             }
             uint8_t key = (uint8_t)keyboard_get_key(); // Get next key pressed
             switch (key)
             {
             case 'r':
             case 'R':
-                selected = false;
+                move_selected = false;
                 game_started = false;
                 init_board(&board);
                 count_pieces(&black_score, &white_score);
@@ -254,6 +254,10 @@ int main(void)
                 running = false;
                 shell_exit(); // Exit the shell cleanly
                 break;
+
+            case KEY_DEL:
+                reset_usb_boot(0, 0);
+                break;
             }
         }
 
@@ -262,10 +266,9 @@ int main(void)
             redraw_board(&board);
             count_pieces(&black_score, &white_score);
             printf("\033[H\033[2KWhite: %d Black: %d", white_score, black_score);
-            printf("\033[32H\033[2KSelect a square and press ENTER");
-            draw_selector(selector_r, selector_c); // Place cursor at the current position
-            selected = false;
-            while (!selected)
+            move_selector(selector_r, selector_c); // Place cursor at the current position
+            move_selected = false;
+            while (!move_selected)
             {
                 uint8_t key = (uint8_t)keyboard_get_key(); // Get next key pressed
                 switch (key)
@@ -273,42 +276,43 @@ int main(void)
                 case KEY_UP:
                     if (selector_r > 0)
                     {
-                        draw_selector(selector_r - 1, selector_c);
+                        move_selector(selector_r - 1, selector_c);
                     }
                     break;
 
                 case KEY_DOWN:
                     if (selector_r < BOARD_SIZE - 1)
                     {
-                        draw_selector(selector_r + 1, selector_c);
+                        move_selector(selector_r + 1, selector_c);
                     }
                     break;
 
                 case KEY_RIGHT:
                     if (selector_c < BOARD_SIZE - 1)
                     {
-                        draw_selector(selector_r, selector_c + 1);
+                        move_selector(selector_r, selector_c + 1);
                     }
                     break;
 
                 case KEY_LEFT:
                     if (selector_c > 0)
                     {
-                        draw_selector(selector_r, selector_c - 1);
+                        move_selector(selector_r, selector_c - 1);
                     }
                     break;
 
                 case KEY_RETURN:
                 case KEY_ENTER:
-                    selected = true; // Set selected to true to exit the loop
+                    move_selected = true; // Set move_selected to true to exit the loop
                     if (!game_started)
                         game_started = true;
                     break;
 
                 case KEY_ESC:
                     running = false;
-                    selected = true; // close the !selected while loop
-                    shell_exit(); // Exit the shell cleanly
+                    move_selected = true; // close the !move_selected while loop
+                    lcd_reset();
+                    shell_exit();         // Exit the shell cleanly
                     break;
 
                 case KEY_DEL:
@@ -317,7 +321,7 @@ int main(void)
 
                 case 'r':
                 case 'R':
-                    selected = false;
+                    move_selected = false;
                     game_started = false;
                     init_board(&board);
                     count_pieces(&black_score, &white_score);
@@ -344,16 +348,15 @@ int main(void)
             redraw_board(&board);
             count_pieces(&black_score, &white_score);
             printf("\033[H\033[2KWhite: %d Black: %d", white_score, black_score);
-            sleep_ms(1500);
         }
 
         if (has_valid_moves(WHITE) && game_started)
         {
+            erase_selector();
             place_piece(&black_disc, selector_r, selector_c);
             redraw_board(&board);
             count_pieces(&black_score, &white_score);
             printf("\033[H\033[2KWhite: %d Black: %d", white_score, black_score);
-            sleep_ms(600);
             machine_turn();
             printf("\033[32H\033[2KSelect a square and press ENTER.");
         }

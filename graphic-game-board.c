@@ -88,8 +88,10 @@ uint8_t board[BOARD_SIZE][BOARD_SIZE];
 
 void init_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE])
 {
+    // reset the start positions for when we play an additional round
     selector_r = START_POSITION_ROW;
     selector_c = START_POSITION_COLUMN;
+    // set all squares as empty
     memset((*b), EMPTY, sizeof((*b)));
     // Standard Reversi starting position
     (*b)[3][3] = WHITE;
@@ -103,24 +105,26 @@ void place_piece(const uint16_t (*piece)[SPRITE_SIZE * SPRITE_SIZE], int r, int 
     int x = (OFFSET_PX + CELL_SIZE * c) + 2;
     int y = (OFFSET_PX + CELL_SIZE * r) + 2;
     lcd_blit((*piece), x, y, SPRITE_SIZE, SPRITE_SIZE);
+    sleep_ms(8);
+}
+
+// remove the selector box from the current location
+void erase_selector(void)
+{
+    int lx = OFFSET_PX + CELL_SIZE * selector_c;       // left selection box bar
+    int rx = OFFSET_PX + CELL_SIZE * (selector_c + 1); // right selection box bar
+    int ly = OFFSET_PX + CELL_SIZE * selector_r;       // top selection box bar
+    int ry = OFFSET_PX + CELL_SIZE * (selector_r + 1); // bottom selection box bar
+    int l = CELL_SIZE + 2;                             // selection box border bar length
+    int w = 2;                                         // selection box border bar width
+    lcd_solid_rectangle(COLOR_GRID, lx, ly, w, l);     // Left
+    lcd_solid_rectangle(COLOR_GRID, lx, ly, l, w);     // Top
+    lcd_solid_rectangle(COLOR_GRID, rx, ly, w, l);     // Right
+    lcd_solid_rectangle(COLOR_GRID, lx, ry, l, w);     // Bottom
 }
 
 void draw_selector(int new_r, int new_c)
 {
-    // if the selection box position has changed erase the old selection box
-    if (new_r != selector_r || new_c != selector_c)
-    {
-        int lx = OFFSET_PX + CELL_SIZE * selector_c;       // left selection box bar
-        int rx = OFFSET_PX + CELL_SIZE * (selector_c + 1); // right selection box bar
-        int ly = OFFSET_PX + CELL_SIZE * selector_r;       // top selection box bar
-        int ry = OFFSET_PX + CELL_SIZE * (selector_r + 1); // bottom selection box bar
-        int l = CELL_SIZE + 2;                             // selection box border bar length
-        int w = 2;                                         // selection box border bar width
-        lcd_solid_rectangle(COLOR_GRID, lx, ly, w, l);     // Left
-        lcd_solid_rectangle(COLOR_GRID, lx, ly, l, w);     // Top
-        lcd_solid_rectangle(COLOR_GRID, rx, ly, w, l);     // Right
-        lcd_solid_rectangle(COLOR_GRID, lx, ry, l, w);     // Bottom
-    }
     int lx = OFFSET_PX + CELL_SIZE * new_c;                 // left selection box bar
     int rx = OFFSET_PX + CELL_SIZE * (new_c + 1);           // right selection box bar
     int ly = OFFSET_PX + CELL_SIZE * new_r;                 // top selection box bar
@@ -131,10 +135,18 @@ void draw_selector(int new_r, int new_c)
     lcd_solid_rectangle(COLOR_SELECTION_BOX, lx, ly, l, w); // Top
     lcd_solid_rectangle(COLOR_SELECTION_BOX, rx, ly, w, l); // Right
     lcd_solid_rectangle(COLOR_SELECTION_BOX, lx, ry, l, w); // Bottom
+}
 
-    // set new selection box position
-    selector_c = new_c;
-    selector_r = new_r;
+void move_selector(int new_r, int new_c)
+{
+    if ((new_r < BOARD_SIZE && new_r >= 0) && (new_c < BOARD_SIZE && new_c >= 0))
+    {
+        erase_selector();
+        draw_selector(new_r, new_c);
+        // set new selection box position
+        selector_c = new_c;
+        selector_r = new_r;
+    }
 }
 
 void render_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE])
@@ -167,7 +179,7 @@ void render_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE])
             }
         }
     }
-    draw_selector(selector_r, selector_c);
+    move_selector(selector_r, selector_c);
 }
 
 void redraw_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE])
@@ -190,5 +202,5 @@ void redraw_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE])
             }
         }
     }
-    draw_selector(selector_r, selector_c);
+    move_selector(selector_r, selector_c);
 }

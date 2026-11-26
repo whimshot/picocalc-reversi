@@ -18,7 +18,7 @@ Play as **Black** against a built-in computer opponent (**White**). The game ren
 | Key | Action |
 | :--- | :--- |
 | **Arrow Keys** (`UP`, `DOWN`, `LEFT`, `RIGHT`) | Move cursor across the 8×8 board |
-| **ENTER** (`RETURN`) | Place a black piece on the selected square |
+| **ENTER** (`RETURN`) | Place a black piece on the move_selected square |
 | **R** | Restart the game |
 | **ESC** | Quit and return to the PicoCalc shell |
 | **DEL** | Reboot device into USB bootloader (`BOOTSEL`) mode |

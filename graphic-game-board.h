@@ -68,7 +68,9 @@ extern uint8_t board[BOARD_SIZE][BOARD_SIZE];
 
 void init_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE]);
 void place_piece(const uint16_t (*piece)[SPRITE_SIZE * SPRITE_SIZE], int c, int r);
+void erase_selector(void);
 void draw_selector(int new_c, int new_r);
+void move_selector(int new_c, int new_r);
 void render_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE]);
 void redraw_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE]);
 

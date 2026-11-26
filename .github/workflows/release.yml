@@ -19,6 +19,8 @@ jobs:
             platform: rp2040
           - board: pico2
             platform: rp2350
+          - board: pimoroni_pico_plus2_rp2350
+            platform: rp2350
 
     steps:
       - name: Checkout repository
