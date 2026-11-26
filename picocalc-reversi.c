@@ -1,6 +1,7 @@
 
 #include "picocalc-reversi.h"
 #include "graphic-game-board.h"
+#include "lcdshot.h"
 
 const int dr[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
 const int dc[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
@@ -159,8 +160,8 @@ void sidebars(void)
     int start_row = 3;
     int left_column = 0;
     int right_column = 63;
-    char left_side[] = "ESC to Quit DEL to BOOTSEL";
-    char right_side[] = "R to restart";
+    char left_side[] = "ESC Quit - DEL BOOTSEL";
+    char right_side[] = "R restart - F10 Screenshot";
     int row = start_row;
     for (int i = 0; i < strlen(left_side); i++)
     {
@@ -258,6 +259,11 @@ int main(void)
             case KEY_DEL:
                 reset_usb_boot(0, 0);
                 break;
+
+            case KEY_F10:
+                char saved[80];
+                lcd_screenshot("reversi", saved, sizeof saved);
+                break;
             }
         }
 
@@ -312,7 +318,7 @@ int main(void)
                     running = false;
                     move_selected = true; // close the !move_selected while loop
                     lcd_reset();
-                    shell_exit();         // Exit the shell cleanly
+                    shell_exit(); // Exit the shell cleanly
                     break;
 
                 case KEY_DEL:
@@ -328,6 +334,11 @@ int main(void)
                     render_board(&board);
                     printf("\033[H\033[2KWhite: %d Black: %d", white_score, black_score);
                     printf("\033[32H\033[2KSelect a square and press ENTER");
+                    break;
+
+                case KEY_F10:
+                    char saved[80];
+                    lcd_screenshot("reversi", saved, sizeof saved);
                     break;
 
                 default:

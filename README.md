@@ -1,6 +1,13 @@
 # PicoCalc Reversi
 
-A graphical implementation of the classic board game **Reversi (Othello)** written in C for the [**ClockworkPi**](https://www.clockworkpi.com/) [**PicoCalc**](https://www.clockworkpi.com/picocalc) handheld device, built upon [picocalc-text-starter](https://github.com/BlairLeduc/picocalc-text-starter) by [BlairLeduc](https://github.com/BlairLeduc).
+![Little Reversi](images/logo.bmp)
+
+A graphical implementation of the classic board game **Reversi (Othello)** written in C for the [**ClockworkPi**](https://www.clockworkpi.com/) [**PicoCalc**](https://www.clockworkpi.com/picocalc) handheld device.
+
+**Made Possible By**
+
+* **[picocalc-text-starter](https://github.com/BlairLeduc/picocalc-text-starter) by [BlairLeduc](https://github.com/BlairLeduc)**
+* **[picocalc-extras](https://github.com/ctorkildson-netizen/picocalc-extras) by [ctorkildson-netizen](https://github.com/ctorkildson-netizen)**
 
 ## Overview
 
@@ -22,6 +29,17 @@ Play as **Black** against a built-in computer opponent (**White**). The game ren
 | **R** | Restart the game |
 | **ESC** | Quit and return to the PicoCalc shell |
 | **DEL** | Reboot device into USB bootloader (`BOOTSEL`) mode |
+| **F10** (`Shift-F5`) | Take a screenshot to impress your friends |
+
+## Screenshots
+
+| Game Openning | A Few Moves In |
+| ------------- | --------------- |
+| ![Game Opening](images/opening-001.bmp) | ![A Few Moves In](images/a_few_moves-001.bmp) |
+
+| White Had No Moves And Passed | Game Over! |
+| ----------------------------- | ---------- |
+| ![White Had No Moves And Passed](images/white_passed-001.bmp) | ![Game Over!](images/end_of_game-001.bmp) |
 
 ## Gameplay Notes
 

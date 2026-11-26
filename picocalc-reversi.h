@@ -46,6 +46,8 @@ volatile bool user_interrupt = false;
 
 #define COLOR_TEXT RGB565(224, 224, 224)
 
+extern int screenshot_filenum;
+
 int black_score, white_score;
 bool game_started;
 bool game_over;

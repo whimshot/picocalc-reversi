@@ -61,6 +61,8 @@ add_executable(picocalc-reversi
         picocalc-reversi.h
         graphic-game-board.c
         graphic-game-board.h
+        screenshot/lcdshot.c
+        screenshot/lcdshot.h
         drivers/audio.c
         drivers/audio.h
         drivers/clib.c
@@ -87,7 +89,7 @@ add_executable(picocalc-reversi
         )
 
 pico_set_program_name(picocalc-reversi "Reversi for the PicoCalc")
-pico_set_program_version(picocalc-reversi "v2.0.4")
+pico_set_program_version(picocalc-reversi "v2.0.6")
 
 # Generate PIO header
 pico_generate_pio_header(picocalc-reversi ${CMAKE_CURRENT_LIST_DIR}/drivers/audio.pio)
@@ -103,6 +105,7 @@ target_link_libraries(picocalc-reversi
 # Add the standard include files to the build
 target_include_directories(picocalc-reversi PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/screenshot
         ${CMAKE_CURRENT_LIST_DIR}/third_party/picocalc-shell
 )
 
