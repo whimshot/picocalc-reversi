@@ -1,7 +1,10 @@
 
 #include "picocalc-reversi.h"
 #include "graphic-game-board.h"
+
+#if PICO_RP2350
 #include "lcdshot.h"
+#endif
 
 const int dr[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
 const int dc[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
@@ -160,8 +163,15 @@ void sidebars(void)
     int start_row = 3;
     int left_column = 0;
     int right_column = 63;
+
+#if PICO_RP2350
     char left_side[] = "ESC Quit - DEL BOOTSEL";
     char right_side[] = "R restart - F10 Screenshot";
+#else
+    char left_side[] = "DEL BOOTSEL";
+    char right_side[] = "R restart";
+#endif
+
     int row = start_row;
     for (int i = 0; i < strlen(left_side); i++)
     {
@@ -260,10 +270,12 @@ int main(void)
                 reset_usb_boot(0, 0);
                 break;
 
+#if PICO_RP2350
             case KEY_F10:
                 char saved[80];
                 lcd_screenshot("reversi", saved, sizeof saved);
                 break;
+#endif
             }
         }
 
@@ -336,10 +348,12 @@ int main(void)
                     printf("\033[32H\033[2KSelect a square and press ENTER");
                     break;
 
+#if PICO_RP2350
                 case KEY_F10:
                     char saved[80];
                     lcd_screenshot("reversi", saved, sizeof saved);
                     break;
+#endif
 
                 default:
                     break;
