@@ -55,9 +55,9 @@ bool move_selected;
 
 void shell_exit(void);
 bool in_bounds(int r, int c);
-int evaluate_move(int r, int c, char piece, bool apply);
-bool has_valid_moves(char piece);
+int evaluate_move(int r, int c, char piece, bool apply, int board_type);
+bool has_valid_moves(char piece, int board_type);
 void count_pieces(int *human_score, int *machine_score);
-void machine_turn(void);
+void machine_turn(int board_type);
 
 #endif /* PICOCALC_REVERSI_H */
