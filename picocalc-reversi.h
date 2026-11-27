@@ -42,7 +42,7 @@ const int cell_height = 2;
 /* ─── Function Prototypes ─────────────────────────────────────────────── */
 
 // needed by keyboard.c in drivers
-volatile bool user_interrupt = false;
+// volatile bool user_interrupt = false;
 
 #define COLOR_TEXT RGB565(224, 224, 224)
 

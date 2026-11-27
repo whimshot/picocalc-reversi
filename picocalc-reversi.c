@@ -228,7 +228,7 @@ int main(void)
                 redraw_board(&board);
                 printf("\033[H\033[2KWhite: %d Black: %d. Black Wins!", white_score, black_score);
                 printf("\033[32H\033[2KGAME OVER!");
-                erase_selector();
+                erase_selector(COLOR_GREEN);
                 game_over = true;
             }
             else if (white_score > black_score) // White wins.
@@ -236,7 +236,7 @@ int main(void)
                 redraw_board(&board);
                 printf("\033[H\033[2KWhite: %d Black: %d. White Wins!", white_score, black_score);
                 printf("\033[32H\033[2KGAME OVER!");
-                erase_selector();
+                erase_selector(COLOR_GREEN);
                 game_over = true;
             }
             else // The game is a tie.
@@ -244,7 +244,7 @@ int main(void)
                 redraw_board(&board);
                 printf("\033[H\033[2KWhite: %d Black: %d. It's A TIE!", white_score, black_score);
                 printf("\033[32H\033[2KGAME OVER!");
-                erase_selector();
+                erase_selector(COLOR_GREEN);
                 game_over = true;
             }
             uint8_t key = (uint8_t)keyboard_get_key(); // Get next key pressed
@@ -377,7 +377,7 @@ int main(void)
 
         if (has_valid_moves(WHITE) && game_started)
         {
-            erase_selector();
+            erase_selector(COLOR_GREEN);
             place_piece(&black_disc, selector_r, selector_c);
             redraw_board(&board);
             count_pieces(&black_score, &white_score);
