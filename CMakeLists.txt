@@ -93,7 +93,7 @@ target_include_directories(fatfs PUBLIC ${FATFS_DIR})
 add_executable(picocalc-reversi ${SOURCES})
 
 pico_set_program_name(picocalc-reversi "Reversi for the PicoCalc")
-pico_set_program_version(picocalc-reversi "v2.0.6")
+pico_set_program_version(picocalc-reversi "v2.0.7")
 
 # Generate PIO header
 pico_generate_pio_header(picocalc-reversi ${CMAKE_CURRENT_LIST_DIR}/drivers/audio.pio)
