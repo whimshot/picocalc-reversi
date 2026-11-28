@@ -148,6 +148,10 @@ const uint16_t red_checker[SPRITE_SIZE * SPRITE_SIZE] = {
 
 volatile bool user_interrupt = false;
 
+int board_type;
+bool piece_picked = false; // true when a square with a piece present is selected
+int selected_piece = 0;
+
 // Game state
 // create the board array
 // static uint8_t board[BOARD_SIZE][BOARD_SIZE];
@@ -198,8 +202,9 @@ void init_checkers_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE])
     }
 }
 
-void init_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE], int board_type)
+void init_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE], int bt)
 {
+    board_type = bt; // set the board for use elswhere
     if (board_type == REVERSI)
         init_reversi_board(b);
     else if (board_type == CHECKERS)
@@ -219,7 +224,26 @@ void place_piece(const uint16_t (*piece)[SPRITE_SIZE * SPRITE_SIZE], int r, int 
     sleep_ms(8);
 }
 
-void remove_piece(int r, int c, int board_type)
+void select_square(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE], int r, int c)
+{
+    int square_contents = get_piece(b, r, c);
+    if (board_type == CHECKERS)
+    {
+        if (piece_picked)
+        {
+            if (square_contents > 0)
+            {
+                
+            }   
+        }
+        if (square_contents > 0)
+        {
+            selected_piece = square_contents;
+            piece_picked = true;
+        }
+    }
+}
+void remove_piece(int r, int c)
 {
     switch (board_type)
     {
@@ -267,7 +291,7 @@ void draw_selector(int new_r, int new_c, uint16_t color)
     lcd_solid_rectangle(color, lx, ry, l, w);         // Bottom
 }
 
-void move_selector(int new_r, int new_c, int board_type)
+void move_selector(int new_r, int new_c)
 {
     if ((new_r < BOARD_SIZE && new_r >= 0) && (new_c < BOARD_SIZE && new_c >= 0))
     {
@@ -363,17 +387,17 @@ void draw_checkers_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE])
     }
 }
 
-void render_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE], int board_type)
+void render_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE])
 {
     if (board_type == REVERSI)
         draw_reversi_board(b);
     else if (board_type == CHECKERS)
         draw_checkers_board(b);
 
-    move_selector(selector_r, selector_c, board_type);
+    move_selector(selector_r, selector_c);
 }
 
-void redraw_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE], int board_type)
+void redraw_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE])
 {
     for (int r = 0; r < BOARD_SIZE; r++)
     {
@@ -393,5 +417,5 @@ void redraw_board(uint8_t (*b)[BOARD_SIZE][BOARD_SIZE], int board_type)
             }
         }
     }
-    move_selector(selector_r, selector_c, board_type);
+    move_selector(selector_r, selector_c);
 }

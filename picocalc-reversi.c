@@ -81,13 +81,13 @@ int evaluate_move(int r, int c, char piece, bool apply, int board_type)
         {
         case WHITE:
             place_piece(&white_disc, r, c);
-            redraw_board(&board, board_type);
+            redraw_board(&board);
             count_pieces(&black_score, &white_score);
             printf("\033[HWhite: %d Black: %d", white_score, black_score);
             break;
         case BLACK:
             place_piece(&black_disc, selector_r, selector_c);
-            redraw_board(&board, board_type);
+            redraw_board(&board);
             count_pieces(&black_score, &white_score);
             printf("\033[HWhite: %d Black: %d", white_score, black_score);
             break;
@@ -192,7 +192,7 @@ void restart_game(int board_type)
     game_started = false;
     init_board(&board, board_type);
     count_pieces(&black_score, &white_score);
-    render_board(&board, board_type);
+    render_board(&board);
     printf("\033[32H\033[2KSelect a square and press ENTER");
 }
 
@@ -212,7 +212,7 @@ int main(void)
     game_started = false;             // the game hasn't started yet
     move_selected = false;
     bool running = true;
-    render_board(&board, board_type);
+    render_board(&board);
     sidebars();
     while (running)
     {
@@ -226,7 +226,7 @@ int main(void)
             count_pieces(&black_score, &white_score);
             if (black_score > white_score) // Black wins.
             {
-                redraw_board(&board, board_type);
+                redraw_board(&board);
                 printf("\033[H\033[2KWhite: %d Black: %d. Black Wins!", white_score, black_score);
                 printf("\033[32H\033[2KGAME OVER!");
                 erase_selector(COLOR_GREEN);
@@ -234,7 +234,7 @@ int main(void)
             }
             else if (white_score > black_score) // White wins.
             {
-                redraw_board(&board, board_type);
+                redraw_board(&board);
                 printf("\033[H\033[2KWhite: %d Black: %d. White Wins!", white_score, black_score);
                 printf("\033[32H\033[2KGAME OVER!");
                 erase_selector(COLOR_GREEN);
@@ -242,7 +242,7 @@ int main(void)
             }
             else // The game is a tie.
             {
-                redraw_board(&board, board_type);
+                redraw_board(&board);
                 printf("\033[H\033[2KWhite: %d Black: %d. It's A TIE!", white_score, black_score);
                 printf("\033[32H\033[2KGAME OVER!");
                 erase_selector(COLOR_GREEN);
@@ -257,7 +257,7 @@ int main(void)
                 game_started = false;
                 init_board(&board, board_type);
                 count_pieces(&black_score, &white_score);
-                render_board(&board, board_type);
+                render_board(&board);
                 printf("\033[H\033[2KWhite: %d Black: %d", white_score, black_score);
                 printf("\033[32H\033[2KSelect a square and press ENTER");
                 break;
@@ -282,10 +282,10 @@ int main(void)
 
         if (black_can_move)
         {
-            redraw_board(&board, board_type);
+            redraw_board(&board);
             count_pieces(&black_score, &white_score);
             printf("\033[H\033[2KWhite: %d Black: %d", white_score, black_score);
-            move_selector(selector_r, selector_c, board_type); // Place cursor at the current position
+            move_selector(selector_r, selector_c); // Place cursor at the current position
             move_selected = false;
             while (!move_selected)
             {
@@ -295,28 +295,28 @@ int main(void)
                 case KEY_UP:
                     if (selector_r > 0)
                     {
-                        move_selector(selector_r - 1, selector_c, board_type);
+                        move_selector(selector_r - 1, selector_c);
                     }
                     break;
 
                 case KEY_DOWN:
                     if (selector_r < BOARD_SIZE - 1)
                     {
-                        move_selector(selector_r + 1, selector_c, board_type);
+                        move_selector(selector_r + 1, selector_c);
                     }
                     break;
 
                 case KEY_RIGHT:
                     if (selector_c < BOARD_SIZE - 1)
                     {
-                        move_selector(selector_r, selector_c + 1, board_type);
+                        move_selector(selector_r, selector_c + 1);
                     }
                     break;
 
                 case KEY_LEFT:
                     if (selector_c > 0)
                     {
-                        move_selector(selector_r, selector_c - 1, board_type);
+                        move_selector(selector_r, selector_c - 1);
                     }
                     break;
 
@@ -340,11 +340,13 @@ int main(void)
 
                 case 'r':
                 case 'R':
+                case 'n':
+                case 'N':
                     move_selected = false;
                     game_started = false;
                     init_board(&board, board_type);
                     count_pieces(&black_score, &white_score);
-                    render_board(&board, board_type);
+                    render_board(&board);
                     printf("\033[H\033[2KWhite: %d Black: %d", white_score, black_score);
                     printf("\033[32H\033[2KSelect a square and press ENTER");
                     break;
@@ -371,7 +373,7 @@ int main(void)
         }
         else if (game_started)
         {
-            redraw_board(&board, board_type);
+            redraw_board(&board);
             count_pieces(&black_score, &white_score);
             printf("\033[H\033[2KWhite: %d Black: %d", white_score, black_score);
         }
@@ -380,7 +382,7 @@ int main(void)
         {
             erase_selector(COLOR_GREEN);
             place_piece(&black_disc, selector_r, selector_c);
-            redraw_board(&board, board_type);
+            redraw_board(&board);
             count_pieces(&black_score, &white_score);
             printf("\033[H\033[2KWhite: %d Black: %d", white_score, black_score);
             machine_turn(board_type);
