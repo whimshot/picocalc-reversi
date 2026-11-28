@@ -30,6 +30,8 @@ include(pico_sdk_import.cmake)
 
 project(picocalc-reversi C CXX ASM)
 
+project(picocalc-reversi VERSION 2.0.8)
+
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
@@ -93,7 +95,7 @@ target_include_directories(fatfs PUBLIC ${FATFS_DIR})
 add_executable(picocalc-reversi ${SOURCES})
 
 pico_set_program_name(picocalc-reversi "Reversi for the PicoCalc")
-pico_set_program_version(picocalc-reversi "v2.0.8")
+pico_set_program_version(picocalc-reversi "${PROJECT_VERSION}")
 
 # Generate PIO header
 pico_generate_pio_header(picocalc-reversi ${CMAKE_CURRENT_LIST_DIR}/drivers/audio.pio)
@@ -133,5 +135,9 @@ target_link_libraries(picocalc-reversi
         hardware_pio
         hardware_clocks
         )
+
+set_target_properties(picocalc-reversi PROPERTIES 
+    OUTPUT_NAME "picocalc-reversi-v${PROJECT_VERSION}"
+)
 
 pico_add_extra_outputs(picocalc-reversi)
