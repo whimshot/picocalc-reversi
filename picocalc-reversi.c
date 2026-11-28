@@ -328,6 +328,8 @@ int main(void)
                     break;
 
                 case KEY_ESC:
+                case 'q':
+                case 'Q':
                     running = false;
                     move_selected = true; // close the !move_selected while loop
                     lcd_reset();
