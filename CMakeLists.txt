@@ -30,7 +30,7 @@ include(pico_sdk_import.cmake)
 
 project(picocalc-reversi C CXX ASM)
 
-project(picocalc-reversi VERSION 2.0.8)
+project(picocalc-reversi VERSION 2.0.10)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
@@ -92,38 +92,46 @@ target_include_directories(fatfs PUBLIC ${FATFS_DIR})
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(picocalc-reversi ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES})
 
-pico_set_program_name(picocalc-reversi "Reversi for the PicoCalc")
-pico_set_program_version(picocalc-reversi "${PROJECT_VERSION}")
+pico_set_program_name(${PROJECT_NAME} "Reversi for the PicoCalc")
+pico_set_program_version(${PROJECT_NAME} "${PROJECT_VERSION}")
 
 # Generate PIO header
-pico_generate_pio_header(picocalc-reversi ${CMAKE_CURRENT_LIST_DIR}/drivers/audio.pio)
+pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/drivers/audio.pio)
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(picocalc-reversi 0)
-pico_enable_stdio_usb(picocalc-reversi 1)
+pico_enable_stdio_uart(${PROJECT_NAME} 0)
+pico_enable_stdio_usb(${PROJECT_NAME} 1)
 
 # Add the standard library to the build
-target_link_libraries(picocalc-reversi
+target_link_libraries(${PROJECT_NAME}
         pico_stdlib)
 
 # Add the standard include files to the build
-target_include_directories(picocalc-reversi PRIVATE
+target_include_directories(${PROJECT_NAME} PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${CMAKE_CURRENT_LIST_DIR}/screenshot
         ${CMAKE_CURRENT_LIST_DIR}/third_party/picocalc-shell
 )
 
+set_property(TARGET ${PROJECT_NAME} APPEND PROPERTY ADDITIONAL_CLEAN_FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.elf.map"
+)
+
+# set_target_properties(${PROJECT_NAME} PROPERTIES
+#         OUTPUT_NAME "${PROJECT_NAME}-v${PROJECT_VERSION}"
+# )
+
 # The PicoCalc shell's clock, for file dates, is in the RP2350's always-on
 # timer (POWMAN). The RP2040 has none, and its files are left undated.
 if (TARGET hardware_powman)
-    target_link_libraries(picocalc-reversi hardware_powman)
+    target_link_libraries(${PROJECT_NAME} hardware_powman)
 endif()
 MESSAGE( STATUS "cmake current list dir: ${CMAKE_CURRENT_LIST_DIR}" )
 
 # Add any user requested libraries
-target_link_libraries(picocalc-reversi
+target_link_libraries(${PROJECT_NAME}
         fatfs
         pico_printf
         pico_float
@@ -136,8 +144,4 @@ target_link_libraries(picocalc-reversi
         hardware_clocks
         )
 
-set_target_properties(picocalc-reversi PROPERTIES 
-    OUTPUT_NAME "picocalc-reversi-v${PROJECT_VERSION}"
-)
-
-pico_add_extra_outputs(picocalc-reversi)
+pico_add_extra_outputs(${PROJECT_NAME})
